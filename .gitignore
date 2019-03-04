@@ -16,6 +16,9 @@ configure.php
 # production
 /build
 
+# resized images cache
+/public/assets/images/cache
+
 # misc
 .DS_Store
 .env.local

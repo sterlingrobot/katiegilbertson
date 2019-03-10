@@ -1,5 +1,11 @@
-# Add these three lines to CORSify your server for everyone.
+# CORS handling
 
-Header set Access-Control-Allow-Origin "http://localhost:3005"
-Header set Access-Control-Allow-Methods "GET,PUT,POST,DELETE"
-Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+SetEnvIf Origin "^http(s)?://(.+\.)?(katiegilbertson\.com|localhost:3005)$" REQUEST_ORIGIN=$0
+Header set Access-Control-Allow-Origin %{REQUEST_ORIGIN}e env=REQUEST_ORIGIN
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "x-test-header, Origin, X-Requested-With, Content-Type, Accept"
+
+# Force to request 200 for options
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule .* / [R=200,L]

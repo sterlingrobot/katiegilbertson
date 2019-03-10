@@ -94,15 +94,17 @@ class App extends Component {
 							<Route
 								path="/projects"
 								render={ ({ history }) =>
-									this.state.projectsData.map((project, i) =>
-										<Project
-											key={project.id}
-											view="list"
-											awards={project.awards}
-											onClick={ (e) => onClick({ e: e, id: project.id, history: history }) }
-											{ ...project.attributes }
-										/>
-									)
+									this.state.projectsData.map((project, i) => {
+										return !project.attributes.is_subproject ?
+											<Project
+												key={project.id}
+												view="list"
+												awards={project.awards}
+												onClick={ (e) => onClick({ e: e, id: project.id, history: history }) }
+												{ ...project.attributes }
+											/>
+											: null
+									})
 								}
 							/>
 						</div>

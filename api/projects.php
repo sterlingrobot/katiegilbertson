@@ -22,7 +22,7 @@ foreach($results as &$project) :
 		list($project['img_width'], $project['img_height']) =
 				getimagesize($dir . str_replace('/assets/' . $project['images_folder'], '', $project['image']));
 
-		if(!$project['is_subproject']) {
+		// if(!$project['is_subproject']) {
 
 				$projects[$project['id']] = array(
 						'id' => $project['id'],
@@ -42,7 +42,8 @@ foreach($results as &$project) :
 
 				$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
 
-		} else {
+		// } else {
+		if($project['is_subproject']) {
 
 				$stmt2 = $db->prepare('SELECT projects_id FROM subprojects_to_projects WHERE subprojects_id = :id LIMIT 1');
 				$stmt2->bindParam('id', $project['id']);

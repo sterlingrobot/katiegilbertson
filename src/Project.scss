@@ -12,7 +12,7 @@ $grey-70: rgba($grey-dk, 0.7);
 		content: '';
 		display: block;
 		flex: 1 1 20em;
-			margin: 0 2em 4em;
+		margin: 0 2em 4em;
 	}
 }
 
@@ -30,6 +30,14 @@ $grey-70: rgba($grey-dk, 0.7);
 	border-radius: 3px;
 	transition: 400ms top, 400ms right, 400ms bottom, 400ms left;
 	flex-flow: column nowrap;
+
+	.project-subprojects & {
+		flex: 0 1 14em;
+		justify-content: flex-end;
+		min-height: 12em;
+		margin: 0 1em 2em;
+		padding-top: 1em;
+	}
 
 	> * {
 		position: relative;
@@ -71,47 +79,78 @@ $grey-70: rgba($grey-dk, 0.7);
 	display: flex;
 	flex: 0 1 100%;
 	justify-content: space-between;
-	margin-bottom: 1em;
-	flex-flow: column nowrap;
+	flex-flow: row wrap;
 	text-shadow: 0 1px rgba(0, 0, 0, 0.8);
 
-	.project-detail & {
+	.project-detail > & {
 		flex: 0 0 auto;
+		margin-bottom: 1em;
 		padding-right: 2.5em;
 		order: 0;
+	}
+
+	.project-subprojects & {
+		flex: 0 0 auto;
+		margin: 0;
+
+		.project-name {
+			margin: 0;
+			font-size: 1.3em;
+		}
 	}
 }
 
 .project-awards {
-	position: absolute;
-	width: 8em;
-	height: 8em;
-	top: 0;
-	right: 0;
+	flex: 0 0 auto;
+	width: 4em;
+	height: 4em;
+	margin-bottom: 1em;
+	opacity: 0.8;
+	overflow: hidden;
 
 	.project-list & .award {
-		padding: 0;
+		width: 100%;
+		height: 100%;
+		padding: 0.3em;
+		margin: 0;
+
+		img {
+			opacity: 1;
+		}
+
+		.award-provider {
+			font-size: 1.8em;
+			font-weight: normal;
+			transform: translate(-50%, -50%);
+		}
 	}
 
-	.project-detail & {
+	.project-detail > & {
 		position: relative;
-		margin-bottom: 1em;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: flex-end;
+		flex: 0 1 8em;
+		width: 100%;
+		height: auto;
 		margin-left: auto;
 		order: 1;
 
 		.award {
-			opacity: 0;
-			transform: translate(-50%, -50%) scale(3);
-			transition: 200ms opacity 200ms, 600ms filter, 400ms transform;
-			filter: blur(10px);
+			flex: 0 1 8em;
+			// opacity: 0;
+			// transform: translate(-50%, -50%) scale(3);
+			// transition: 200ms opacity 200ms, 600ms filter, 400ms transform;
+			// filter: blur(10px);
 
-			&.show {
-				opacity: 1;
-				transform: translate(-50%, -50%) scale(1);
-				animation: 1.2s slideout 4s forwards;
-				filter: blur(0);
-				transition-duration: 600ms;
-			}
+			// &.show {
+			// 	opacity: 1;
+			// 	transform: translate(-50%, -50%) scale(1);
+			// 	animation: 1.2s slideout 4s forwards;
+			// 	filter: blur(0);
+			// 	transition-duration: 600ms;
+			// }
 		}
 	}
 }
@@ -122,7 +161,7 @@ $grey-70: rgba($grey-dk, 0.7);
 	justify-content: space-between;
 	flex-flow: column nowrap;
 
-	.project-detail & {
+	.project-detail > & {
 		max-width: 48em;
 		margin: 0 auto;
 		order: 2;
@@ -154,7 +193,7 @@ $grey-70: rgba($grey-dk, 0.7);
 		transform: rotateZ(90deg);
 	}
 
-	.project-detail & {
+	.project-detail > & {
 		opacity: 0.7;
 		z-index: 20;
 		pointer-events: auto;
@@ -179,8 +218,8 @@ $grey-70: rgba($grey-dk, 0.7);
 	transition: 4800ms transform;
 	background-repeat: no-repeat;
 
-	.project:hover &,
-	.project-detail & {
+	.project:hover > &,
+	.project-detail > & {
 		transform: scale(1.08);
 		// transform:
 		// 	translate(var(--tx), var(--ty))
@@ -191,7 +230,7 @@ $grey-70: rgba($grey-dk, 0.7);
 }
 
 .project-name {
-	margin: 0 0 1em;
+	margin: 0 0 0.5em;
 	font-size: 1.666em;
 	font-weight: 300;
 }
@@ -200,10 +239,15 @@ $grey-70: rgba($grey-dk, 0.7);
 	margin-top: auto;
 	font-size: 0.85em;
 	font-style: italic;
+	flex: 1 0 100%;
 
-	.project-detail & {
+	.project-detail > .project-heading > & {
 		margin-top: 0;
 		margin-bottom: auto;
+	}
+
+	.project-subprojects & {
+		display: none;
 	}
 }
 
@@ -233,7 +277,7 @@ $grey-70: rgba($grey-dk, 0.7);
 		border: 0;
 	}
 
-	.project-detail & {
+	.project-detail > .project-content > & {
 		display: block;
 	}
 }
@@ -245,12 +289,18 @@ $grey-70: rgba($grey-dk, 0.7);
 .project-description {
 	display: none;
 	position: relative;
-	padding: 1em 2em 4em;
+	padding: 1em 2em 2em;
 	font-size: 0.95em;
 
-	.project-detail & {
+	.project-detail > .project-content > & {
 		display: block;
 	}
+}
+
+.project-subprojects {
+	display: flex;
+	flex-flow: row wrap;
+	font-size: 75%;
 }
 
 @media only screen and (min-width: $bp-mobile) {
@@ -271,7 +321,7 @@ $grey-70: rgba($grey-dk, 0.7);
 		border-width: 2px;
 	}
 
-	.project-heading {
+	.project-detail > .project-heading {
 		padding-right: 3.5em;
 	}
 

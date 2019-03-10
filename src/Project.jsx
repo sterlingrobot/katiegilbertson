@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 import Video from './Video.jsx';
 import Award from './Award.jsx';
@@ -11,26 +11,24 @@ class Project extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			awardIndex: 0
-		}
-	}
-
-	onTimer() {
-		let next = this.state.awardIndex + 1;
-		next = next > this.props.awards.length - 1 ? 0 : next;
-		this.setState({ awardIndex: next });
-	}
-
-	componentDidMount() {
-		this.intervalId = setInterval(this.onTimer.bind(this), Math.ceil(Math.random() * (6400 - 4800) + 4800));
-	}
-	componentWillUnmount(){
-		clearInterval(this.intervalId);
+		};
 	}
 
 	render(props) {
 		const {
-			props: { view, name, employer, role, date_completed, image, description, video_link, awards, onClick }
+			props: {
+				view,
+				name,
+				employer,
+				role,
+				date_completed,
+				image,
+				description,
+				video_link,
+				awards,
+				subprojects,
+				onClick
+			}
 		} = this;
 		return (
 			<article className={`project project-${view}`} onClick={onClick} >
@@ -40,9 +38,8 @@ class Project extends Component {
 					view === 'detail' && awards.length ?
 						<div className="project-awards">
 							{
-								awards.map((award, i) =>
+								awards.map((award) =>
 									<Award
-										show={ this.state.awardIndex === i }
 										key={award.id}
 										{...award}
 									/>
@@ -52,28 +49,49 @@ class Project extends Component {
 						: null
 					}
 				/>
-				<Route render={ () =>
-					view === 'list' && awards.length ?
-						<div className="project-awards">
-							<Award show	/>
-						</div>
-						: null
-					}
-				/>
 				<header className="project-heading">
 					<h4 className="project-name">
 						<span className="project-role">{role}</span>
 						{name}
 					</h4>
+					<Route render={ () =>
+						view === 'list' && awards.length ?
+							<div className="project-awards">
+								<Award show	provider={awards.length} />
+							</div>
+							: null
+						}
+					/>
 					<span className="project-employer">{employer}</span>
 					<span className="project-date">{date_completed}</span>
 				</header>
-				<div className="project-content">
-					<div className="project-video">
-						<Video title={name} src={video_link} img={image} />
+				{ view === 'detail' ?
+					<div className="project-content">
+						<div className="project-video">
+							<Video title={name} src={video_link} img={image} />
+						</div>
+						<Route render={ ({ history }) =>
+							subprojects.length ?
+								<div className="project-subprojects">
+									{
+										subprojects.map((project, i) =>
+											<Project
+												key={project.id}
+												view="list"
+												awards={[]}
+												onClick={ (e) => history.push(`/projects/${project.id}`) }
+												{ ...project }
+											/>
+										)
+									}
+								</div>
+								: null
+							}
+						/>
+						<div className="project-description">{description}</div>
 					</div>
-					<div className="project-description">{description}</div>
-				</div>
+					: null
+				}
 			</article>
 		)
 	}

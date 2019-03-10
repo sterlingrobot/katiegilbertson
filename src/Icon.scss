@@ -1,0 +1,23 @@
+.icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	line-height: 1;
+	color: inherit;
+
+	svg {
+		stroke-width: 0;
+		stroke: currentColor;
+		fill: currentColor;
+	}
+}
+
+.icon-small {
+	width: 0.8em;
+	height: 0.8em;
+}
+
+.icon-large {
+	width: 2em;
+	height: 2em;
+}

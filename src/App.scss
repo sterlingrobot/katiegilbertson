@@ -1,10 +1,51 @@
 @import 'variables';
 
 main {
+	display: flex;
+	flex-flow: column nowrap;
 	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
 
 	&.noscroll {
 		overflow-y: hidden;
+	}
+}
+
+.app-nav {
+	align-self: flex-end;
+
+	ul {
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
+	li {
+		margin: 0;
+		list-style: none;
+	}
+
+	a:link,
+	a:active,
+	a:visited {
+		display: block;
+		padding: 0.666em 1.25em;
+		color: #fff;
+		font-size: 1rem;
+		text-align: right;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	@media only screen and (min-width: $bp-mobile) {
+
+		ul {
+			flex-direction: row;
+		}
+
+		li {
+			margin: 0 1em;
+		}
 	}
 }
 
@@ -13,7 +54,8 @@ main {
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
-	height: 100%;
+	flex: 1 0 auto;
+	padding: 2em 1em;
 	font-size: calc(10px + 2vmin);
 	color: #fff;
 

@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom';
 
 import Video from './Video.jsx';
 import Award from './Award.jsx';
+import Block from './Block.jsx';
 
 import './Project.scss';
 
@@ -25,17 +26,22 @@ class Project extends Component {
 				image,
 				description,
 				video_link,
-				awards,
-				subprojects,
+				awards=[],
+				blocks=[],
+				subprojects=[],
 				onClick
 			}
 		} = this;
 		return (
 			<article className={`project project-${view}`} onClick={onClick} >
-				<span className="icn-close"></span>
+				{ view === 'detail' ?
+					<Link className="icn-close" to="/projects">
+						<span>Close</span>
+					</Link>
+					: null
+				}
 				<div className="project-image" style={{ backgroundImage: `url(${image})` }}	></div>
-				<Route render={ () =>
-					view === 'detail' && awards.length ?
+					{ view === 'detail' && awards.length ?
 						<div className="project-awards">
 							{
 								awards.map((award) =>
@@ -48,48 +54,61 @@ class Project extends Component {
 						</div>
 						: null
 					}
-				/>
 				<header className="project-heading">
 					<h4 className="project-name">
 						<span className="project-role">{role}</span>
 						{name}
 					</h4>
-					<Route render={ () =>
-						view === 'list' && awards.length ?
+					{ view === 'list' && awards.length ?
 							<div className="project-awards">
-								<Award show	provider={awards.length} />
+								<Award provider={awards.length} />
 							</div>
 							: null
-						}
-					/>
+					}
 					<span className="project-employer">{employer}</span>
 					<span className="project-date">{date_completed}</span>
 				</header>
+
 				{ view === 'detail' ?
+
 					<div className="project-content">
-						<div className="project-video">
-							<Video title={name} src={video_link} img={image} />
-						</div>
+						{ video_link ?
+							<div className="project-video">
+								<Video title={name} src={video_link} img={image} />
+							</div>
+							: null
+						}
+
 						<Route render={ ({ history }) =>
 							subprojects.length ?
 								<div className="project-subprojects">
 									{
 										subprojects.map((project, i) =>
-											<Project
-												key={project.id}
-												view="list"
-												awards={[]}
-												onClick={ (e) => history.push(`/projects/${project.id}`) }
-												{ ...project }
-											/>
+											<Link key={project.id}
+												className="project-link"
+												to={`/projects/${project.slug}`}
+											>
+												<Project
+													view="list"
+													{ ...project }
+												/>
+											</Link>
 										)
 									}
 								</div>
 								: null
 							}
 						/>
-						<div className="project-description">{description}</div>
+
+						<Block content={description} classArr={['project-description']} />
+						{ blocks.length ?
+								blocks.map(({ content }, i) =>
+									<Block key={i} content={content} classArr={['project-block']} />
+								)
+								: null
+						}
 					</div>
+
 					: null
 				}
 			</article>

@@ -8,35 +8,43 @@ $grey-70: rgba($grey-dk, 0.7);
 	padding: 1em 1em 2em;
 	flex-flow: row wrap;
 
-	&:after {
+	&:after,
+	.project-subprojects:after {
 		content: '';
 		display: block;
 		flex: 1 1 20em;
-		margin: 0 2em 4em;
+		margin: 0 1em 2em;
 	}
+}
+
+.project-link {
+	flex: 1 1 20em;
+	margin: 0 1em 2em;
+	text-decoration: none;
 }
 
 .project {
 	display: flex;
-	flex: 1 1 20em;
+	flex: 1 0 auto;
 	justify-content: space-between;
 	position: relative;
-	max-width: calc(1080px + 2em + 4px);
+	height: 100%;
 	min-height: 18em;
-	margin: 0 1em 2em;
 	padding: 10em 1em 1em;
 	overflow: hidden;
-	border: 2px solid rgba(#fff, 0.8);
-	border-radius: 3px;
+	// border: 2px solid rgba(#fff, 0.8);
+	// border-radius: 3px;
 	transition: 400ms top, 400ms right, 400ms bottom, 400ms left;
 	flex-flow: column nowrap;
+	text-decoration: none;
 
-	.project-subprojects & {
-		flex: 0 1 14em;
-		justify-content: flex-end;
+	.project-subprojects &.project-list {
 		min-height: 12em;
-		margin: 0 1em 2em;
-		padding-top: 1em;
+		padding-top: 8em;
+	}
+
+	.project-subprojects & .project-link {
+		justify-content: flex-end;
 	}
 
 	> * {
@@ -50,24 +58,36 @@ $grey-70: rgba($grey-dk, 0.7);
 		display: block;
 		position: absolute;
 		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
 		z-index: 1;
 		background: linear-gradient(to bottom, transparent 25%, $grey-dk 90%);
 		transition: 2400ms background;
 	}
+}
 
-	&.project-detail {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+.project-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0 auto;
+	z-index: 10;
+	background: rgba(0, 0, 0, 0.6);
+	border-width: 0;
+	flex-flow: column nowrap;
+
+	.project-detail {
+		flex: 0 1 auto;
+		max-width: 100%;
+		max-height: 100vh;
 		margin: 0 auto;
 		padding-top: 1em;
-		z-index: 10;
-		border-width: 0;
 
 		&:after {
 			background: linear-gradient(to bottom, transparent -50%, $grey-dk 70%);
@@ -95,24 +115,23 @@ $grey-70: rgba($grey-dk, 0.7);
 
 		.project-name {
 			margin: 0;
-			font-size: 1.3em;
 		}
 	}
 }
 
 .project-awards {
 	flex: 0 0 auto;
+	opacity: 0.8;
 	width: 4em;
 	height: 4em;
 	margin-bottom: 1em;
-	opacity: 0.8;
 	overflow: hidden;
 
 	.project-list & .award {
 		width: 100%;
 		height: 100%;
-		padding: 0.3em;
 		margin: 0;
+		padding: 0.3em;
 
 		img {
 			opacity: 1;
@@ -126,15 +145,15 @@ $grey-70: rgba($grey-dk, 0.7);
 	}
 
 	.project-detail > & {
-		position: relative;
 		display: flex;
-		flex-flow: row wrap;
-		justify-content: center;
-		align-items: flex-end;
+		// align-items: flex-end;
 		flex: 0 1 8em;
+		justify-content: center;
+		position: relative;
 		width: 100%;
 		height: auto;
 		margin-left: auto;
+		flex-flow: row wrap;
 		order: 1;
 
 		.award {
@@ -158,12 +177,13 @@ $grey-70: rgba($grey-dk, 0.7);
 .project-content {
 	display: flex;
 	flex: 1 1 auto;
-	justify-content: space-between;
+	justify-content: flex-start;
+	align-items: center;
 	flex-flow: column nowrap;
 
 	.project-detail > & {
-		max-width: 48em;
-		margin: 0 auto;
+		// max-width: 48em;
+		// margin: 0 auto;
 		order: 2;
 	}
 }
@@ -183,7 +203,7 @@ $grey-70: rgba($grey-dk, 0.7);
 		content: '';
 		display: block;
 		position: absolute;
-		width: 2px;
+		width: 1px;
 		height: 2.5em;
 		left: 50%;
 		background: #fff;
@@ -236,10 +256,10 @@ $grey-70: rgba($grey-dk, 0.7);
 }
 
 .project-employer {
+	flex: 1 0 100%;
 	margin-top: auto;
 	font-size: 0.85em;
 	font-style: italic;
-	flex: 1 0 100%;
 
 	.project-detail > .project-heading > & {
 		margin-top: 0;
@@ -259,23 +279,9 @@ $grey-70: rgba($grey-dk, 0.7);
 
 .project-video {
 	display: none;
-	flex: 1 1 auto;
+	flex: 1 0 auto;
 	position: relative;
-	max-width: 100%;
-
-	video,
-	iframe {
-		display: block;
-		position: absolute;
-		width: 100%;
-		max-height: 100%;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: 0 auto;
-		border: 0;
-	}
+	width: 100%;
 
 	.project-detail > .project-content > & {
 		display: block;
@@ -286,11 +292,16 @@ $grey-70: rgba($grey-dk, 0.7);
 	display: none;
 }
 
-.project-description {
+.project-description,
+.project-block {
 	display: none;
 	position: relative;
 	padding: 1em 2em 2em;
 	font-size: 0.95em;
+
+	+ .project-block {
+		padding-top: 0;
+	}
 
 	.project-detail > .project-content > & {
 		display: block;
@@ -299,8 +310,13 @@ $grey-70: rgba($grey-dk, 0.7);
 
 .project-subprojects {
 	display: flex;
-	flex-flow: row wrap;
+	justify-content: center;
 	font-size: 75%;
+	flex-flow: row wrap;
+
+	> .project {
+		flex: 0 1 24em;
+	}
 }
 
 @media only screen and (min-width: $bp-mobile) {
@@ -309,16 +325,11 @@ $grey-70: rgba($grey-dk, 0.7);
 		padding: 1em 4em 4em;
 	}
 
-	.project {
-		margin: 0 2em 4em;
-	}
-
-	.project.project-detail {
-		top: 2em;
-		left: 2em;
-		right: 2em;
-		bottom: 2em;
-		border-width: 2px;
+	.project-wrap .project-detail {
+		width: 90em;
+		max-width: calc(100% - 4em);
+		max-height: calc(100vh - 4em);
+		margin: 0 auto;
 	}
 
 	.project-detail > .project-heading {
@@ -331,6 +342,13 @@ $grey-70: rgba($grey-dk, 0.7);
 		height: 3em;
 		top: 1.5em;
 		right: 1.5em;
+
+		span {
+			display: block;
+			height: 0;
+			font-size: 0;
+			line-height: 0;
+		}
 	}
 }
 

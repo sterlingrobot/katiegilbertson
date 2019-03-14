@@ -1,12 +1,6 @@
 <?php
 require_once('includes/configure.php');
 
-define('DEV_ROOT', dirname(FS_ROOT) . (DEVELOPMENT ? '/public/' : '/dev/'));
-
-$db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DEFAULT . ';charset=utf8', DB_USERNAME, DB_PASSWORD);
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
 $stmt = $db->prepare('SELECT id,
 	is_subproject,
 	name,
@@ -81,6 +75,8 @@ foreach($results as &$project) :
 				$stmt2->execute();
 				$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
 
+				// set to parent slug for back link
+				// $project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
 				$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
 		}
 
@@ -117,6 +113,6 @@ function getDirectoryTree($outerDir, $x) {
 		return $return;
 }
 
-echo json_encode($projects);
+out($projects);
 
 ?>

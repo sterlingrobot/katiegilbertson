@@ -1,9 +1,5 @@
 <?php
 require_once('includes/configure.php');
-ini_set('display_errors', 1);
-$db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DEFAULT . ';charset=utf8', DB_USERNAME, DB_PASSWORD);
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 $where = (isset($_GET['id'])) ? ' WHERE p.id = :id' : '';
 
@@ -17,6 +13,4 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $awards[$row['id']][] = $row;
 }
 
-echo json_encode($awards);
-
-?>
+out($awards);

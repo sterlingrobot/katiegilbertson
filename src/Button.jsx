@@ -7,12 +7,14 @@ import './Button.scss';
 
 const BtnLink = ({ url, children }) =>
 	(url ?
-		<Link to={url}>{children}</Link>
+		/^(https?:\/\/|mailto:)/.test(url) ?
+			<a href={url} target="_blank" rel="noopener noreferrer">{children}</a>
+			: <Link to={url}>{children}</Link>
 		: <div className="btn-inner">{children}</div>
 	);
 
-const Button = ({ text, type='default', url='', icons=[] }) =>
-	<div className={`btn btn-${type}`} >
+const Button = ({ text, type='default', size='md', url='', icons=[], onClick }) =>
+	<div className={`btn btn-${type} btn-${size}`} onClick={onClick} >
 		<BtnLink url={url}>
 			{ icons[0] ?  <Icon icon={icons[0]} /> : null }
 			<span>{text}</span>

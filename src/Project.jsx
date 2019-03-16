@@ -26,6 +26,8 @@ class Project extends Component {
 				image,
 				description,
 				video_link,
+				is_gated,
+				is_subproject,
 				awards=[],
 				blocks=[],
 				subprojects=[],
@@ -34,47 +36,52 @@ class Project extends Component {
 		} = this;
 		return (
 			<article className={`project project-${view}`} onClick={onClick} >
+
 				{ view === 'detail' ?
-					<Link className="icn-close" to="/projects">
-						<span>Close</span>
-					</Link>
+					<Link className="icn-close" to="/projects"><span>Close</span></Link>
 					: null
 				}
+
 				<div className="project-image" style={{ backgroundImage: `url(${image})` }}	></div>
+
 					{ view === 'detail' && awards.length ?
 						<div className="project-awards">
-							{
-								awards.map((award) =>
-									<Award
-										key={award.id}
-										{...award}
-									/>
-								)
-							}
+							{ awards.map((award) => <Award key={award.id} {...award} /> ) }
 						</div>
 						: null
 					}
+
 				<header className="project-heading">
+
+					{ view === 'detail' && is_subproject ?
+						<Link className="icn-back" to={`/projects/${is_subproject}`} ><span>Back</span></Link>
+						: null
+					}
+
 					<h4 className="project-name">
 						<span className="project-role">{role}</span>
 						{name}
 					</h4>
+
 					{ view === 'list' && awards.length ?
 							<div className="project-awards">
 								<Award provider={awards.length} />
 							</div>
 							: null
 					}
+
 					<span className="project-employer">{employer}</span>
 					<span className="project-date">{date_completed}</span>
+
 				</header>
 
 				{ view === 'detail' ?
 
 					<div className="project-content">
+
 						{ video_link ?
 							<div className="project-video">
-								<Video title={name} src={video_link} img={image} />
+								<Video title={name} src={video_link} img={image} gated={is_gated} />
 							</div>
 							: null
 						}
@@ -88,10 +95,7 @@ class Project extends Component {
 												className="project-link"
 												to={`/projects/${project.slug}`}
 											>
-												<Project
-													view="list"
-													{ ...project }
-												/>
+												<Project view="list" { ...project } />
 											</Link>
 										)
 									}

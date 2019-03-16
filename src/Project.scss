@@ -65,6 +65,21 @@ $grey-70: rgba($grey-dk, 0.7);
 		background: linear-gradient(to bottom, transparent 25%, $grey-dk 90%);
 		transition: 2400ms background;
 	}
+
+	::-webkit-scrollbar {
+		width: 4px;
+		height: 4px;
+	}
+
+	::-webkit-scrollbar-track {
+		appearance: none;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.6);
+		border-radius: 4px;
+	}
+
 }
 
 .project-wrap {
@@ -176,10 +191,11 @@ $grey-70: rgba($grey-dk, 0.7);
 
 .project-content {
 	display: flex;
-	flex: 1 1 auto;
+	flex: 1 1 0%;
 	justify-content: flex-start;
 	align-items: center;
 	flex-flow: column nowrap;
+	overflow-y: auto;
 
 	.project-detail > & {
 		// max-width: 48em;
@@ -188,15 +204,24 @@ $grey-70: rgba($grey-dk, 0.7);
 	}
 }
 
-.icn-close {
-	position: absolute;
-	opacity: 0;
+.icn-close,
+.icn-back {
+	opacity: 0.7;
+	z-index: 20;
+	cursor: pointer;
 	width: 3em;
 	height: 3em;
-	top: 0.5em;
-	right: 0.5em;
-	transform: rotateZ(45deg);
-	pointer-events: none;
+
+	span {
+		display: block;
+		height: 0;
+		font-size: 0;
+		line-height: 0;
+	}
+
+	&:hover {
+		opacity: 0.9;
+	}
 
 	&:before,
 	&:after {
@@ -208,20 +233,40 @@ $grey-70: rgba($grey-dk, 0.7);
 		left: 50%;
 		background: #fff;
 	}
+}
+
+.icn-close {
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+	transform: rotateZ(45deg);
 
 	&:after {
 		transform: rotateZ(90deg);
 	}
+}
 
-	.project-detail > & {
-		opacity: 0.7;
-		z-index: 20;
-		pointer-events: auto;
-		cursor: pointer;
+.icn-back {
+	position: relative;
+	top: 0.5em;
+	margin-right: -1em;
+	transform: rotateZ(45deg);
 
-		&:hover {
-			opacity: 0.9;
-		}
+	&:before,
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		width: 1px;
+		height: 1.5em;
+		left: 0;
+		top: 25%;
+		transform-origin: 0 0;
+	}
+
+	&:after {
+		top: 75%;
+		transform: rotateZ(-90deg);
 	}
 }
 
@@ -250,6 +295,7 @@ $grey-70: rgba($grey-dk, 0.7);
 }
 
 .project-name {
+	flex: 1 0 0%;
 	margin: 0 0 0.5em;
 	font-size: 1.666em;
 	font-weight: 300;
@@ -279,11 +325,13 @@ $grey-70: rgba($grey-dk, 0.7);
 
 .project-video {
 	display: none;
-	flex: 1 0 auto;
+	flex: 0 1 auto;
 	position: relative;
+	margin-bottom: 2em;
 	width: 100%;
+	max-width: 60em;
 
-	.project-detail > .project-content > & {
+	.project-detail & {
 		display: block;
 	}
 }
@@ -295,6 +343,7 @@ $grey-70: rgba($grey-dk, 0.7);
 .project-description,
 .project-block {
 	display: none;
+	flex: 0 0 auto;
 	position: relative;
 	padding: 1em 2em 2em;
 	font-size: 0.95em;
@@ -310,6 +359,7 @@ $grey-70: rgba($grey-dk, 0.7);
 
 .project-subprojects {
 	display: flex;
+	flex: 0 0 auto;
 	justify-content: center;
 	font-size: 75%;
 	flex-flow: row wrap;
@@ -342,13 +392,6 @@ $grey-70: rgba($grey-dk, 0.7);
 		height: 3em;
 		top: 1.5em;
 		right: 1.5em;
-
-		span {
-			display: block;
-			height: 0;
-			font-size: 0;
-			line-height: 0;
-		}
 	}
 }
 

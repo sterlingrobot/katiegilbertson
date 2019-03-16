@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 // import { withRouter } from 'react-router';
 
+import Icon from './Icon.jsx';
+import Button from './Button.jsx';
 import Project from './Project';
 import './App.scss';
 
@@ -66,53 +68,53 @@ class App extends Component {
 					/>
 
 					<section className="app-content">
-							<Route
-								path="/projects"
-								render={ ({ history }) =>
-									<div className="projects">
+						<Route
+							path="/projects"
+							render={ ({ history }) =>
+								<div className="projects">
 
-										<Route
-											exact path="/projects/:name/:role"
-											render={ ({ match, history }) => {
-												const slug = [match.params.name, match.params.role].join('/'),
-															project = this.state.projectsData.length &&
-																				this.state.projectsData
-																					.filter((p) => p.attributes.slug === slug)
-																					.shift();
-												return project ?
-													<section className="project-wrap">
-														<Project
-															view="detail"
-															awards={project.awards}
-															blocks={project.blocks}
-															{ ...project.attributes }
-															onClick={onClick}
-														/>
-													</section>
-													: null;
-											}}
-										/>
-
-									{ this.state.projectsData.map((project, i) => {
-											return project.id && !project.attributes.is_subproject ?
-												<Link key={project.id}
-													className="project-link"
-													to={`/projects/${project.attributes.slug}`}
-												>
+									<Route
+										exact path="/projects/:name/:role"
+										render={ ({ match, history }) => {
+											const slug = [match.params.name, match.params.role].join('/'),
+														project = this.state.projectsData.length &&
+																			this.state.projectsData
+																				.filter((p) => p.attributes.slug === slug)
+																				.shift();
+											return project ?
+												<section className="project-wrap">
 													<Project
-														view="list"
+														view="detail"
 														awards={project.awards}
+														blocks={project.blocks}
 														{ ...project.attributes }
 														onClick={onClick}
 													/>
-												</Link>
-												: null
-										})
-									}
+												</section>
+												: null;
+										}}
+									/>
 
-									</div>
+								{ this.state.projectsData.map((project, i) => {
+										return project.id && !project.attributes.is_subproject ?
+											<Link key={project.id}
+												className="project-link"
+												to={`/projects/${project.attributes.slug}`}
+											>
+												<Project
+													view="list"
+													awards={project.awards}
+													{ ...project.attributes }
+													onClick={onClick}
+												/>
+											</Link>
+											: null
+									})
 								}
-							/>
+
+								</div>
+							}
+						/>
 					</section>
 				</main>
 			</Router>

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-// import { withRouter } from 'react-router';
 
-import Icon from './Icon.jsx';
-import Button from './Button.jsx';
 import Project from './Project';
 import './App.scss';
 

@@ -1,3 +1,5 @@
+@import 'variables';
+
 .btn {
 	margin: 0 0.5em 0.5em;
 	font-size: 1.2em;
@@ -72,12 +74,12 @@
 
 		> a,
 		> .btn-inner {
-			color: #adffa8;
+			color: $green-lt;
 			padding: 0.1em;
 		}
 
 		&:hover {
-			border-color: #adffa8;
+			border-color: $green-lt;
 		}
 	}
 
@@ -91,6 +93,7 @@
 			align-items: center;
 			font-size: 0.8em;
 			padding: 0.5em 0.5em 0.2em;
+			text-align: center;
 
 			.icon {
 				font-size: 2em;

@@ -6,15 +6,15 @@ function createMarkup(content) {
 
 // api uses htmlentities
 function decodeHtml(str) {
-    const map =
-    {
-      '&amp;': '&',
-      '&lt;': '<',
-      '&gt;': '>',
-      '&quot;': '"',
-      '&#039;': "'"
-    };
-    return str.replace(new RegExp(Object.keys(map).join('|'), 'g'), (m) => map[m]);
+		const map =
+		{
+			'&amp;': '&',
+			'&lt;': '<',
+			'&gt;': '>',
+			'&quot;': '"',
+			'&#039;': "'"
+		};
+		return str && str.replace(new RegExp(Object.keys(map).join('|'), 'g'), (m) => map[m]);
 }
 
 const Block  = ({ content, classArr=[] }) =>

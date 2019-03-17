@@ -61,7 +61,6 @@ class Video extends Component {
 	render() {
 		const {
 			generateUrl,
-			onLinkClick,
 			props: { title, src, img, gated=0, width=1920, height=1080 }
 		} = this;
 		return (

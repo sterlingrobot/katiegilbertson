@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
+import Nav from './Nav';
+import Contact from './Contact';
+import Typeshow from './Typeshow'
 import Project from './Project';
 import './App.scss';
+
+const routes = [
+	{ name: 'Projects', url: '/projects' },
+	{ name: 'About', url: '/about' },
+	{ name: 'Contact', url: '/contact' }
+];
 
 class App extends Component {
 
@@ -10,12 +19,18 @@ class App extends Component {
 		super(props);
 		this.state = {
 			noscroll: /projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '',
+			contacts: {},
 			projectsData: []
 		};
 		this.onClick = this.onClick.bind(this);
 	}
 
 	componentDidMount() {
+		fetch(/development/.test(process.env.NODE_ENV) ? '//api.katie.local:8005/contacts.json' : '//api.katiegilbertson.com/contacts.json')
+			.then(response => response.json())
+			.then(data => this.setState({
+				contacts: data
+			}));
 		fetch(/development/.test(process.env.NODE_ENV) ? '//api.katie.local:8005' : '//api.katiegilbertson.com')
 			.then(response => response.json())
 			.then(data => this.setState({
@@ -26,8 +41,7 @@ class App extends Component {
 
 	onClick(e) {
 		return this.setState({
-			noscroll: e.target.className === 'icn-close' ?
-								'' : 'noscroll'
+			noscroll: e.target.className === 'icn-close' ? '' : 'noscroll'
 		});
 	}
 
@@ -39,32 +53,49 @@ class App extends Component {
 			<Router>
 				<main className={ `app ${this.state.noscroll}` } >
 
-					<nav className="app-nav">
-						<ul>
-							<li><Link to="/">Home</Link></li>
-							<li><Link to="/projects">Projects</Link></li>
-							<li><Link to="/about">About</Link></li>
-							<li><Link to="/contact">Contact</Link></li>
-						</ul>
-					</nav>
-
-					<Route
-						exact path="/"
-						render={ () =>
-							<header className="app-header">
-								<h1>Story Architech</h1>
-								<h2>Katie Lose Gilbertson</h2>
-								<h5>
-									<span>Filmmaker</span>
-									<span>Editor</span>
-									<span>Story Consultant</span>
-								</h5>
-								<h6>Bozeman, Montana</h6>
-							</header>
-						}
-					/>
+					<Nav routes={routes} />
 
 					<section className="app-content">
+
+						<Route
+							exact path="/"
+							render={ () =>
+								<header className="app-header">
+									<h1>Story Architech</h1>
+									<h2>Katie Lose Gilbertson</h2>
+									<h5>
+										<span>Filmmaker</span>
+										<span>Editor</span>
+										<span>Story Consultant</span>
+									</h5>
+									<h6>Bozeman, Montana</h6>
+								</header>
+							}
+						/>
+
+						<Route
+							exact path="/contact"
+							render={ () =>
+								<header className="app-header">
+									<h1>Story Architech</h1>
+									<h2>Katie Lose Gilbertson</h2>
+									<div className="contact-content">
+										<Typeshow className="services">
+											<h6>Documentary Editing</h6>
+											<h6>Narrative Editing</h6>
+											<h6>Story Consulting & Development</h6>
+											<h6>Writing</h6>
+										</Typeshow>
+										<p>Need help finding your story? Or do you already know it?
+										<br/>I can help from story development through editing.</p>
+										<h3>Contact Me</h3>
+									</div>
+									<Contact contacts={this.state.contacts} />
+									<h6>Bozeman, Montana</h6>
+								</header>
+							}
+						/>
+
 						<Route
 							path="/projects"
 							render={ ({ history }) =>
@@ -112,6 +143,7 @@ class App extends Component {
 								</div>
 							}
 						/>
+
 					</section>
 				</main>
 			</Router>

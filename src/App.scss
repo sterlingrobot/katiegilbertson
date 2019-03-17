@@ -2,8 +2,8 @@
 
 main {
 	display: flex;
-	flex-flow: column nowrap;
 	height: 100%;
+	flex-flow: column nowrap;
 	overflow-x: hidden;
 	overflow-y: auto;
 
@@ -30,9 +30,9 @@ main {
 	a:visited {
 		display: block;
 		padding: 0.666em 1.25em;
-		color: #fff;
 		font-size: 1rem;
 		text-align: right;
+		color: #fff;
 		text-decoration: none;
 		text-transform: uppercase;
 	}
@@ -51,18 +51,18 @@ main {
 
 .app-header {
 	display: flex;
-	flex-flow: column nowrap;
+	flex: 1 0 auto;
 	justify-content: center;
 	align-items: center;
-	flex: 1 0 auto;
 	padding: 2em 1em;
 	font-size: calc(10px + 2vmin);
 	color: #fff;
+	flex-flow: column nowrap;
 
 	h1,
 	h6 {
+		font-weight: 200;
 		text-transform: lowercase;
-		font-weight: 100;
 	}
 
 	h2 {
@@ -72,8 +72,8 @@ main {
 
 	h5 {
 		margin: 0.2em 0 auto;
-		text-transform: uppercase;
 		font-size: 0.55em;
+		text-transform: uppercase;
 
 		> span {
 			display: inline-block;
@@ -88,5 +88,36 @@ main {
 }
 
 .app-content {
-	display: grid;
+	display: flex;
+	flex: 1 0 auto;
+	justify-content: space-between;
+	align-items: center;
+	flex-flow: column nowrap;
+}
+
+.contact-content {
+	display: flex;
+	max-width: 24em;
+	text-align: center;
+	flex-flow: column nowrap;
+
+	h3 {
+		margin-top: 2em;
+		font-size: 0.8em;
+		text-transform: uppercase;
+	}
+
+	p {
+		line-height: 1.55;
+		font-size: 0.8em;
+	}
+}
+
+.services {
+	flex: 1 0 6em;
+
+	h6 {
+		font-size: 1.2em;
+		color: $green-lt;
+	}
 }

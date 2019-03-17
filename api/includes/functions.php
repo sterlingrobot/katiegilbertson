@@ -16,6 +16,28 @@
 		if ($myurl != $s) { header("Location: $s", true, 301); exit; }
 	}
 
+
+	function getDirectoryTree($outerDir, $x) {
+
+		$dirs = array_diff(scandir($outerDir), array('.', '..'));
+		$dir_array = array();
+		foreach($dirs as $d) {
+
+			if(is_dir($outerDir . DIRECTORY_SEPARATOR . $d)) {
+				$dir_array[] = getDirectoryTree($outerDir . DIRECTORY_SEPARATOR . $d , $x);
+			} else {
+				if ($x ? preg_match(DIRECTORY_SEPARATOR . $x .'$/i', $d) : 1) {
+					$dir_array[] = str_replace(FS_ROOT, '', $outerDir) . '/' . $d;
+				}
+			}
+		}
+
+		$return = array();
+		array_walk_recursive($dir_array, function($a) use (&$return) { $return[] = $a; });
+
+		return $return;
+	}
+
 	function out($params) {
 
 		$out = json_encode($params);

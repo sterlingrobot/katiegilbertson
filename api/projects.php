@@ -25,15 +25,14 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($results as &$project) :
 
-		$dir = DEV_ROOT . 'assets/' . $project['images_folder'];
+		$dir = FS_ROOT . $project['images_folder'];
 
 		// PROJECT IMAGE
-		$project['image'] = '/assets/' . $project['images_folder'] . DIRECTORY_SEPARATOR .
+		$project['image'] = $project['images_folder'] . DIRECTORY_SEPARATOR .
 			'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
 
 		list($project['img_width'], $project['img_height']) =
-				getimagesize($dir . str_replace('/assets/' . $project['images_folder'], '', $project['image']));
-
+				getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
 
 		$projects[$project['id']] = array(
 				'id' => $project['id'],
@@ -91,27 +90,6 @@ function project_sort($a,$b) {
 				return 0;
 		}
 		return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
-}
-
-function getDirectoryTree($outerDir, $x) {
-
-		$dirs = array_diff(scandir($outerDir), array('.', '..'));
-		$dir_array = array();
-		foreach($dirs as $d) {
-
-				if(is_dir($outerDir . DIRECTORY_SEPARATOR . $d)) {
-						$dir_array[] = getDirectoryTree($outerDir . '/' . $d , $x);
-				} else {
-						if ($x ? preg_match('/' . $x .'$/i', $d) : 1) {
-								$dir_array[] = str_replace(DEV_ROOT, '/', $outerDir) . '/' . $d;
-						}
-				}
-		}
-
-		$return = array();
-		array_walk_recursive($dir_array, function($a) use (&$return) { $return[] = $a; });
-
-		return $return;
 }
 
 out($projects);

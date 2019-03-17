@@ -9,7 +9,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			noscroll: '',
+			noscroll: /projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '',
 			projectsData: []
 		};
 		this.onClick = this.onClick.bind(this);

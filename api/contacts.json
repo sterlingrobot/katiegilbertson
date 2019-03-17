@@ -1,0 +1,20 @@
+{
+  "mobile":
+  {
+    "content": "(502) 592-1677",
+    "url": "tel:5025921677",
+    "icon": "PHONE"
+  },
+  "email":
+  {
+    "content": "katie@katiegilbertson.com",
+    "url": "mailto:katie@katiegilbertson.com",
+    "icon": "MAIL"
+  },
+  "linkedin":
+  {
+    "content": "Katie's Profile",
+    "url": "https://www.linkedin.com/in/katie-lose-gilbertson-24532219/",
+    "icon": "LINKEDIN"
+  }
+}

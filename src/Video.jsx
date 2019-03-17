@@ -37,7 +37,7 @@ class Video extends Component {
 				subject: '&su'
 			},
 			yahoo: {
-				to: 'http://compose.mail.yahoo.com/?to=',
+				to: 'https://compose.mail.yahoo.com/?to=',
 				subject: '&subj'
 			},
 			outlook: {
@@ -50,14 +50,12 @@ class Video extends Component {
 
 	generateUrl(provider) {
 		return encodeURI([
-			`${this.providers[provider].to}Katie Lose Gilbertson<katie@katiegilbertson.com>`,
+			this.providers[provider].to,
+			// yahoo is dumb
+			provider === 'yahoo' ? 'katie@katiegilbertson.com' : 'Katie Lose Gilbertson <katie@katiegilbertson.com>',
 			`${this.providers[provider].subject}=Video Access Request: ${this.props.title}`,
-			`&body=Hello,\n\nI'd like the password view this video.`,
+			`&body=Hello,\r\n\r\nI'd like the password view this video.`,
 		].join(''));
-	}
-
-	onLinkClick() {
-		;
 	}
 
 	render() {

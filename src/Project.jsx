@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 
 import Video from './Video.jsx';
+import Slider from './Slider.jsx';
 import Award from './Award.jsx';
 import Block from './Block.jsx';
 
@@ -28,6 +29,7 @@ class Project extends Component {
 				video_link,
 				is_gated,
 				is_subproject,
+				images=[],
 				awards=[],
 				blocks=[],
 				subprojects=[],
@@ -83,7 +85,13 @@ class Project extends Component {
 							<div className="project-video">
 								<Video title={name} src={video_link} img={image} gated={is_gated} />
 							</div>
-							: null
+
+							: !subprojects.length && images.length ?
+								<div className="project-images">
+									<Slider images={images} />
+								</div>
+
+								: null
 						}
 
 						<Route render={ ({ history }) =>

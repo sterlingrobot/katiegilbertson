@@ -1,0 +1,16 @@
+.images-slider {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	max-width: 100%;
+	height: 100%;
+	padding-bottom: 1em;
+	overflow-x: scroll;
+	scroll-snap-type: x mandatory;
+
+	img {
+		margin: 0 1em;
+		max-width: 100%;
+		scroll-snap-align: center;
+	}
+}

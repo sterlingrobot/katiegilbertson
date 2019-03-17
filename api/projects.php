@@ -76,7 +76,7 @@ foreach($results as &$project) :
 				$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
 
 				// set to parent slug for back link
-				// $project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
+				$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
 				$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
 		}
 

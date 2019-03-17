@@ -51,7 +51,7 @@ foreach($results as &$project) :
 		$stmt3->bindParam('id', $project['id']);
 		$stmt3->bindParam('id2', $project['id']);
 		$stmt3->execute();
-		$projects[$project['id']]['awards'] = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+		$projects[$project['id']]['attributes']['awards'] = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 
 		// CONTENT ARRAY
 		$stmt4 = $db->prepare('SELECT * FROM content_to_projects WHERE projects_id = :id
@@ -59,7 +59,7 @@ foreach($results as &$project) :
 
 		$stmt4->bindParam('id', $project['id']);
 		$stmt4->execute();
-		$projects[$project['id']]['blocks'] = array_map(function($block) {
+		$projects[$project['id']]['attributes']['blocks'] = array_map(function($block) {
 			$block['content'] = htmlspecialchars($block['content']);
 			return $block;
 		}, $stmt4->fetchAll(PDO::FETCH_ASSOC));

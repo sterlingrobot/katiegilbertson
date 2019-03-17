@@ -85,7 +85,7 @@ class Video extends Component {
 								type="link"
 								size="sm"
 								text="I have a password"
-								onClick={onLinkClick}
+								onClick={ () => this.setState({ step: this.steps.length - 1 }) }
 							/>
 						</div>
 

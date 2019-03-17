@@ -1,0 +1,24 @@
+.typeshow {
+	position: relative;
+
+	> * {
+		position: absolute;
+		width: 0;
+		top: 50%;
+		left: 50%;
+		text-align: center;
+		transform: translate(-50%, -50%);
+		white-space: nowrap;
+		overflow: hidden;
+
+		&.show {
+			animation: 2s 250ms steps(40, end) 2 alternate typein;
+		}
+	}
+}
+
+@keyframes typein {
+	0% { width: 0; }
+  40% { width: 100%; }
+  100% { width: 100%; }
+}

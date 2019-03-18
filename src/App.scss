@@ -12,101 +12,6 @@ main {
 	}
 }
 
-.app-nav {
-	width: 100%;
-	max-width: 80em;
-	display: flex;
-	flex: 0 0 auto;
-	justify-content: flex-end;
-	margin: 0 auto;
-
-	ul {
-		display: flex;
-		flex-flow: column nowrap;
-	}
-
-	li {
-		margin: 0;
-		list-style: none;
-	}
-
-	a:link,
-	a:active,
-	a:visited {
-		display: block;
-		padding: 0.666em 1.25em;
-		font-size: 1rem;
-		text-align: right;
-		color: #fff;
-		text-decoration: none;
-		text-transform: uppercase;
-	}
-
-	@media only screen and (max-width: $bp-mobile) {
-
-		ul > li > a:link,
-		ul > li > a:active,
-		ul > li > a:visited {
-			padding-left: 0;
-			padding-right: 0;
-		}
-
-	}
-
-	// @media only screen and (min-width: $bp-mobile) {
-
-		ul {
-			flex-direction: row;
-		}
-
-		li {
-			margin: 0 1em;
-		}
-	// }
-}
-
-.app-header {
-	display: flex;
-	flex: 1 0 auto;
-	flex-flow: column nowrap;
-	order: 1;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	max-width: 48em;
-	margin: 0 auto;
-	padding: 2em 1em;
-	font-size: calc(10px + 2vmin);
-	color: #fff;
-
-	h1,
-	h6 {
-		font-weight: 200;
-		text-transform: lowercase;
-	}
-
-	h2 {
-		margin: auto 0 0.2em;
-		font-weight: normal;
-	}
-
-	h5 {
-		margin: 0.2em 0 auto;
-		font-size: 0.55em;
-		text-transform: uppercase;
-
-		> span {
-			display: inline-block;
-			padding: 0 2em;
-			border-right: 1px solid rgba(#fff, 0.5);
-
-			&:last-child {
-				border: 0;
-			}
-		}
-	}
-}
-
 .app-content {
 	display: flex;
 	flex: 1 0 auto;
@@ -117,10 +22,13 @@ main {
 
 .services {
 	flex: 1 0 6em;
+	width: 100%;
 
 	h6 {
-		font-size: 1.2em;
+		font-size: 2em;
 		color: $green-lt;
+		font-weight: 200;
+		text-transform: lowercase;
 	}
 }
 

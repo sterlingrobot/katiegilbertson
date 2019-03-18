@@ -1,0 +1,54 @@
+@import 'variables';
+
+.app-nav {
+	width: 100%;
+	max-width: 80em;
+	display: flex;
+	flex: 0 0 auto;
+	justify-content: flex-end;
+	margin: 0 auto;
+
+	ul {
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
+	li {
+		margin: 0;
+		list-style: none;
+	}
+
+	a:link,
+	a:active,
+	a:visited {
+		display: block;
+		padding: 0.666em 1.25em;
+		font-size: 1rem;
+		text-align: right;
+		color: #fff;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	@media only screen and (max-width: $bp-mobile) {
+
+		ul > li > a:link,
+		ul > li > a:active,
+		ul > li > a:visited {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+	}
+
+	// @media only screen and (min-width: $bp-mobile) {
+
+		ul {
+			flex-direction: row;
+		}
+
+		li {
+			margin: 0 1em;
+		}
+	// }
+}

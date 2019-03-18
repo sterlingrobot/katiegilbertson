@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; //BrowserRouter as Router, Route,
 
+import './Nav.scss';
+
 const Nav = ({ routes }) =>
 	<nav className="app-nav">
 		<ul>

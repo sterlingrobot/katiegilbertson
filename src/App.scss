@@ -2,8 +2,8 @@
 
 main {
 	display: flex;
-	height: 100%;
 	flex-flow: column nowrap;
+	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
 
@@ -13,7 +13,12 @@ main {
 }
 
 .app-nav {
-	align-self: flex-end;
+	width: 100%;
+	max-width: 80em;
+	display: flex;
+	flex: 0 0 auto;
+	justify-content: flex-end;
+	margin: 0 auto;
 
 	ul {
 		display: flex;
@@ -37,7 +42,18 @@ main {
 		text-transform: uppercase;
 	}
 
-	@media only screen and (min-width: $bp-mobile) {
+	@media only screen and (max-width: $bp-mobile) {
+
+		ul > li > a:link,
+		ul > li > a:active,
+		ul > li > a:visited {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+	}
+
+	// @media only screen and (min-width: $bp-mobile) {
 
 		ul {
 			flex-direction: row;
@@ -46,18 +62,22 @@ main {
 		li {
 			margin: 0 1em;
 		}
-	}
+	// }
 }
 
 .app-header {
 	display: flex;
 	flex: 1 0 auto;
+	flex-flow: column nowrap;
+	order: 1;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
+	max-width: 48em;
+	margin: 0 auto;
 	padding: 2em 1em;
 	font-size: calc(10px + 2vmin);
 	color: #fff;
-	flex-flow: column nowrap;
 
 	h1,
 	h6 {
@@ -90,27 +110,9 @@ main {
 .app-content {
 	display: flex;
 	flex: 1 0 auto;
+	flex-flow: column nowrap;
 	justify-content: space-between;
 	align-items: center;
-	flex-flow: column nowrap;
-}
-
-.contact-content {
-	display: flex;
-	max-width: 24em;
-	text-align: center;
-	flex-flow: column nowrap;
-
-	h3 {
-		margin-top: 2em;
-		font-size: 0.8em;
-		text-transform: uppercase;
-	}
-
-	p {
-		line-height: 1.55;
-		font-size: 0.8em;
-	}
 }
 
 .services {
@@ -119,5 +121,17 @@ main {
 	h6 {
 		font-size: 1.2em;
 		color: $green-lt;
+	}
+}
+
+[class*='-content'] {
+	width: 100%;
+	max-width: 80em;
+	margin: 0 auto;
+	padding-right: 2em;
+	padding-left: 2em;
+
+	> * {
+		color: #fff;
 	}
 }

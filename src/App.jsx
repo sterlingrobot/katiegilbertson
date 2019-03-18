@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Nav from './Nav';
+import Header from './Header';
+import Typeshow from './Typeshow';
+import About from './About';
 import Contact from './Contact';
-import Typeshow from './Typeshow'
 import Project from './Project';
+
 import './App.scss';
 
 const routes = [
@@ -19,22 +22,16 @@ class App extends Component {
 		super(props);
 		this.state = {
 			noscroll: /projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '',
-			contacts: {},
 			projectsData: []
 		};
 		this.onClick = this.onClick.bind(this);
 	}
 
 	componentDidMount() {
-		fetch(/development/.test(process.env.NODE_ENV) ? '//api.katie.local:8005/contacts.json' : '//api.katiegilbertson.com/contacts.json')
-			.then(response => response.json())
-			.then(data => this.setState({
-				contacts: data
-			}));
 		fetch(/development/.test(process.env.NODE_ENV) ? '//api.katie.local:8005' : '//api.katiegilbertson.com')
 			.then(response => response.json())
 			.then(data => this.setState({
-				projectsData: [...data.sort((a, b) => a.id - b.id)]
+				projectsData: data //[...data.sort((a, b) => a.id - b.id)]
 			}))
 			.then(() => (document.getElementById('root').className = 'init'))
 	}
@@ -54,47 +51,20 @@ class App extends Component {
 				<main className={ `app ${this.state.noscroll}` } >
 
 					<Nav routes={routes} />
+					<Header />
 
 					<section className="app-content">
 
-						<Route
-							exact path="/"
-							render={ () =>
-								<header className="app-header">
-									<h1>Story Architech</h1>
-									<h2>Katie Lose Gilbertson</h2>
-									<h5>
-										<span>Filmmaker</span>
-										<span>Editor</span>
-										<span>Story Consultant</span>
-									</h5>
-									<h6>Bozeman, Montana</h6>
-								</header>
-							}
-						/>
-
-						<Route
-							exact path="/contact"
-							render={ () =>
-								<header className="app-header">
-									<h1>Story Architech</h1>
-									<h2>Katie Lose Gilbertson</h2>
-									<div className="contact-content">
-										<Typeshow className="services">
-											<h6>Documentary Editing</h6>
-											<h6>Narrative Editing</h6>
-											<h6>Story Consulting & Development</h6>
-											<h6>Writing</h6>
-										</Typeshow>
-										<p>Need help finding your story? Or do you already know it?
-										<br/>I can help from story development through editing.</p>
-										<h3>Contact Me</h3>
-									</div>
-									<Contact contacts={this.state.contacts} />
-									<h6>Bozeman, Montana</h6>
-								</header>
-							}
-						/>
+						<Route exact path="/" render={ () =>
+							<Typeshow className="services">
+								<h6>Documentary Editing</h6>
+								<h6>Narrative Editing</h6>
+								<h6>Story Consulting & Development</h6>
+								<h6>Writing</h6>
+							</Typeshow>
+						}/>
+						<Route exact path="/about" component={About} />
+						<Route exact path="/contact" component={Contact} />
 
 						<Route
 							path="/projects"

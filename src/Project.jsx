@@ -46,13 +46,6 @@ class Project extends Component {
 
 				<div className="project-image" style={{ backgroundImage: `url(${image})` }}	></div>
 
-					{ view === 'detail' && awards.length ?
-						<div className="project-awards">
-							{ awards.map((award) => <Award key={award.id} {...award} /> ) }
-						</div>
-						: null
-					}
-
 				<header className="project-heading">
 
 					{ view === 'detail' && is_subproject ?
@@ -80,6 +73,13 @@ class Project extends Component {
 				{ view === 'detail' ?
 
 					<div className="project-content">
+
+						{ awards.length ?
+							<div className="project-awards">
+								{ awards.map((award) => <Award key={award.id} {...award} /> ) }
+							</div>
+							: null
+						}
 
 						{ video_link ?
 							<div className="project-video">

@@ -1,14 +1,65 @@
+@import 'variables';
+
+.contact {
+	display: flex;
+	width: 100%;
+	flex-flow: column nowrap;
+}
+
+.contact-image {
+	flex: 1 0 20em;
+	position: relative;
+	width: 100%;
+	margin: 0 0 -4em;
+	background-size: cover;
+	background-position: 100% 0;
+	background-repeat: no-repeat;
+
+	@media only screen and (max-width: $bp-mobile) {
+		background-position: 80% 0;
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		z-index: 1;
+		background: linear-gradient(to bottom, transparent 25%, $grey 90%);
+	}
+}
+
+.contact-content {
+	display: flex;
+	position: relative;
+	z-index: 1;
+	flex-flow: column nowrap;
+
+	h3 {
+		margin: 2em auto 0;
+		text-transform: uppercase;
+	}
+
+	p {
+		margin: 0 auto;
+		max-width: 80ex;
+	}
+}
+
+
 .contacts {
 	display: flex;
-	flex-flow: row wrap;
 	justify-content: center;
-	margin: auto;
 	padding: 2em 0;
+	flex-flow: row wrap;
 
 	> li {
 		display: flex;
-		flex-flow: row nowrap;
 		flex: 0 1 10em;
+		flex-flow: row nowrap;
 		list-style: none;
 	}
 
@@ -16,7 +67,6 @@
 		flex: 1 1 auto;
 
 		.btn-text {
-			font-size: 0.8em;
 			font-weight: 400;
 		}
 	}

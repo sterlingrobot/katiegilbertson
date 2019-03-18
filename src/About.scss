@@ -1,0 +1,45 @@
+@import 'variables';
+
+.about {
+	display: flex;
+	flex-flow: column nowrap;
+	width: 100%;
+}
+
+.about-image {
+	position: relative;
+	flex: 1 0 20em;
+	margin: 0 0 -4em;
+	background-size: cover;
+	background-position: 100% 0;
+	background-repeat: no-repeat;
+
+	@media only screen and (max-width: $bp-mobile) {
+		background-position: 80% 0;
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		z-index: 1;
+		background: linear-gradient(to bottom, transparent 25%, $grey 90%);
+	}
+}
+
+.about-content {
+	position: relative;
+	z-index: 1;
+
+	p {
+		max-width: 80ex;
+
+		@media only screen and (min-width: $bp-desktop) {
+			margin-left: 4em;
+		}
+	}
+}

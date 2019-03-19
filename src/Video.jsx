@@ -138,6 +138,10 @@ class Video extends Component {
 					height={height}
 					border="0"
 					poster={img}
+					mozallowfullscreen="true"
+					webkitallowfullscreen="true"
+					allowFullScreen
+					allow="fullscreen"
 					controls>
 					<p>Sorry, we're not able to load the video.</p>
 					<p>You can follow <a href={src}>this link</a> instead to view.</p>

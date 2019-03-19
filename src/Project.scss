@@ -101,7 +101,6 @@ $grey-70: rgba($grey-dk, 0.7);
 		flex: 0 1 auto;
 		max-width: 100%;
 		max-height: 100vh;
-		margin: 0 auto;
 		padding-top: 1em;
 
 		&:after {
@@ -304,6 +303,12 @@ $grey-70: rgba($grey-dk, 0.7);
 	font-weight: 300;
 }
 
+.project-subtitle {
+	display: block;
+	color: #ddd;
+	font-size: 0.666em;
+}
+
 .project-employer {
 	flex: 1 0 100%;
 	margin-top: auto;
@@ -340,8 +345,11 @@ $grey-70: rgba($grey-dk, 0.7);
 	}
 }
 
-.project-images {
-	padding: 0 1em;
+@media only screen and (min-width: $bp-mobile) {
+
+	.project-images {
+		padding: 0 1em;
+	}
 }
 
 .project-date {

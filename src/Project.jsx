@@ -21,6 +21,7 @@ class Project extends Component {
 			props: {
 				view,
 				name,
+				subtitle,
 				employer,
 				role,
 				date_completed,
@@ -56,6 +57,10 @@ class Project extends Component {
 					<h4 className="project-name">
 						<span className="project-role">{role}</span>
 						{name}
+						{view === 'detail' ?
+							<span className="project-subtitle">{subtitle}</span>
+							: null
+						}
 					</h4>
 
 					{ view === 'list' && awards.length ?

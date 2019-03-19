@@ -28,7 +28,10 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		fetch(/development/.test(process.env.NODE_ENV) ? '//api.katie.local:8005' : '//api.katiegilbertson.com')
+		const endpoint = /development/.test(process.env.NODE_ENV) ?
+			'//api.katiegilbertson.com' //'//api.katie.local:8005'
+			: '//api.katiegilbertson.com';
+		fetch(endpoint)
 			.then(response => response.json())
 			.then(data => this.setState({
 				projectsData: data //[...data.sort((a, b) => a.id - b.id)]

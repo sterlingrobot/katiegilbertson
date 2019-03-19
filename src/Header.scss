@@ -11,7 +11,7 @@
 	width: 100%;
 	max-width: 48em;
 	margin: 0 auto;
-	padding: 2em 1em;
+	padding: 2em 1em 1em;
 	font-size: calc(10px + 2vmin);
 	color: #fff;
 
@@ -44,5 +44,9 @@
 				border: 0;
 			}
 		}
+	}
+
+	h6 {
+		margin-top: 1em;
 	}
 }

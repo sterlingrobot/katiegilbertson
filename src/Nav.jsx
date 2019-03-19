@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; //BrowserRouter as Router, Route,
+import { NavLink } from 'react-router-dom'; //BrowserRouter as Router, Route,
 
 import './Nav.scss';
 
@@ -7,7 +7,7 @@ const Nav = ({ routes }) =>
 	<nav className="app-nav">
 		<ul>
 			{ routes.map((route, i) =>
-				<li key={i}><Link to={route.url}>{route.name}</Link></li>
+				<li key={i}><NavLink activeClassName="nav-active" to={route.url}>{route.name}</NavLink></li>
 			)}
 		</ul>
 	</nav>

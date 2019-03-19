@@ -4,6 +4,7 @@ require_once('includes/configure.php');
 $stmt = $db->prepare('SELECT id,
 	is_subproject,
 	name,
+	subtitle,
 	slug,
 	description,
 	YEAR(date_completed) AS date_completed,

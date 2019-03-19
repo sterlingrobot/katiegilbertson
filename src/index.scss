@@ -1,0 +1,104 @@
+@import 'variables';
+
+html,
+body,
+#root,
+main {
+	height: 100%;
+}
+
+body,
+#root {
+  overflow: hidden;
+}
+
+#root {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 1s 100ms;
+}
+
+#root.init {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+body {
+  min-width: 380px;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 2rem;
+  background: #282c34;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-repeat: no-repeat;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  line-height: 1.55;
+}
+
+p + p {
+  margin-top: 1.5em;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+//////////////////////////////////////////
+// BASE FONT SIZE
+//////////////////////////////////////////
+
+// full desktop, for base 10px = 1rem
+html {
+  font-size: 62.5%;
+  height: 100%;
+
+}
+
+@media only screen and (min-width: $bp-desktop) and (max-width: $bp-lgdesktop) {
+  html {
+    $map: ($bp-desktop: 8.5px, $bp-lgdesktop: 10px);
+    font-size: linear-interpolation($map);
+  }
+}
+
+@media only screen and (min-width: $bp-tablet) and (max-width: $bp-desktop) {
+  html {
+    $map: ($bp-tablet: 8px, $bp-desktop: 8.7px);
+    font-size: linear-interpolation($map);
+  }
+}
+
+@media only screen and (min-width: $bp-mobile) and (max-width:$bp-tablet) {
+  html {
+    $map: ($bp-mobile: 7px, $bp-tablet: 8.7px);
+    font-size: linear-interpolation($map);
+  }
+}
+
+@media only screen and (max-width:$bp-tablet) {
+  html {
+    font-size: 46%;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+}

@@ -59,7 +59,8 @@ class App extends Component {
 							<Typeshow className="services">
 								<h6>Documentary Editing</h6>
 								<h6>Narrative Editing</h6>
-								<h6>Story Consulting & Development</h6>
+								<h6>Story Development</h6>
+								<h6>Story Consulting</h6>
 								<h6>Writing</h6>
 							</Typeshow>
 						}/>

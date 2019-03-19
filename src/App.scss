@@ -4,6 +4,7 @@ main {
 	display: flex;
 	flex-flow: column nowrap;
 	height: 100%;
+	padding: 3em 0;
 	overflow-x: hidden;
 	overflow-y: auto;
 
@@ -38,6 +39,11 @@ main {
 	margin: 0 auto;
 	padding-right: 2em;
 	padding-left: 2em;
+
+	@media only screen and (max-width: $bp-mobile) {
+		padding-right: 0.5em;
+		padding-left: 0.5em;
+	}
 
 	> * {
 		color: #fff;

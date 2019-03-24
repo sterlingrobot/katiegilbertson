@@ -1,0 +1,11 @@
+# Use PHP5 Single php.ini as default
+# AddHandler application/x-httpd-php5s .php
+
+Redirect 301 /index.html /index.php
+
+RewriteEngine On
+
+RewriteBase /
+
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://time.katiegilbertson.com/$1 [R,L]

@@ -3,6 +3,8 @@
 # config
 sftp-config.json
 configure.php
+config.inc.php
+conf.ini
 *.sql
 
 # dependencies
@@ -15,6 +17,9 @@ configure.php
 
 # production
 /build
+
+# xataface cache
+/admin/templates_c
 
 # resized images cache
 /public/assets/images/cache

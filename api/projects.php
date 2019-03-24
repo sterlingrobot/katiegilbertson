@@ -9,6 +9,7 @@ $stmt = $db->prepare('SELECT id,
 	description,
 	YEAR(date_completed) AS date_completed,
 	employer,
+	customer,
 	status,
 	role,
 	images_folder,
@@ -17,7 +18,7 @@ $stmt = $db->prepare('SELECT id,
 	social_links,
 	sort
 	FROM projects
-	ORDER BY is_subproject ASC
+	ORDER BY is_subproject ASC, sort ASC
 ');
 $stmt->execute();
 
@@ -28,12 +29,37 @@ foreach($results as &$project) :
 
 		$dir = FS_ROOT . $project['images_folder'];
 
-		// PROJECT IMAGE
-		$project['image'] = $project['images_folder'] . DIRECTORY_SEPARATOR .
-			'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
+		// IMAGES ARRAY
+		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
 
-		list($project['img_width'], $project['img_height']) =
-				getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
+		// PROJECT IMAGE
+		$project['image'] =
+			file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?
+			$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg'
+			: (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png') ?
+						$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png'
+						: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = get_vimeo_thumbnail('https:' . $project['video_link'])) ?
+										preg_replace('/https?:/', '', $vthumb)
+								: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
+												'//img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
+										: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
+														$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
+												: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
+																$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.png'
+														: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.jpg') ?
+																		$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg'
+																	: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
+																					$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
+																					: $project['images'][0])))))));
+			// 'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
+
+		if(preg_match('/(youtube|vimeo)/i', $project['image'])) {
+			list($project['img_width'], $project['img_height']) =
+					getimagesize('https:' . $project['image']);
+		} else {
+			list($project['img_width'], $project['img_height']) =
+					getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
+		}
 
 		$projects[$project['id']] = array(
 				'id' => $project['id'],
@@ -64,9 +90,6 @@ foreach($results as &$project) :
 			$block['content'] = htmlspecialchars($block['content']);
 			return $block;
 		}, $stmt4->fetchAll(PDO::FETCH_ASSOC));
-
-		// IMAGES ARRAY
-		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
 
 		// SUBPROJECT PARENT
 		if($project['is_subproject']) {

@@ -1,0 +1,42 @@
+0.3 2306
+May 20, 2011
+
+------------------------------------------------------------------------
+	r2306 | shannah | 2011-05-20 13:26:21 -0700 (Fri, 20 May 2011) | 1 line
+	
+	Fixed issue with blank labels when adding new labels and the tagger_label is a calculated field.
+	------------------------------------------------------------------------
+	r2305 | shannah | 2011-05-20 13:06:47 -0700 (Fri, 20 May 2011) | 1 line
+	
+	Updated documentation
+	------------------------------------------------------------------------
+	r2304 | shannah | 2011-05-19 16:05:10 -0700 (Thu, 19 May 2011) | 1 line
+	
+	Fixed issue with javascript error if we try to filter a list with a null value.
+	------------------------------------------------------------------------
+	r2278 | shannah | 2011-05-11 22:08:01 -0700 (Wed, 11 May 2011) | 1 line
+	
+	Removed debugging alerts
+	------------------------------------------------------------------------
+	r2276 | shannah | 2011-05-11 19:09:39 -0700 (Wed, 11 May 2011) | 1 line
+	
+	Fixed bugs with deleting tags - and updating tag when changes are made to the tag record.
+	------------------------------------------------------------------------
+	r2275 | shannah | 2011-05-11 18:41:00 -0700 (Wed, 11 May 2011) | 1 line
+	
+	updated changes.txt and version.txt to new version.
+	
+
+
+
+0.2 2274
+May 11, 2011
+
+	- Changed so that tags now are referenced by id instead of label.
+	- Added ability to double-click tag to open up an edit form for the tagged element.
+	
+0.1 2258
+May 9, 2011
+
+	- Initial release
+	- Tag clouds only work on transient fields currently.

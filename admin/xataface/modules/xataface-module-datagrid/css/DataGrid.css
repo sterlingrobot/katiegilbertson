@@ -1,0 +1,17 @@
+#editor-grid {
+
+
+}
+
+.dataGrid-fullScreen {
+	position: absolute;
+	width: 100% !important;
+	height: 100% !important;
+	top:0;
+	left:0;
+	margin:0 !important;
+	border:0 !important;
+	padding:0 !important;
+	/*padding-bottom: 20px !important;*/
+
+}

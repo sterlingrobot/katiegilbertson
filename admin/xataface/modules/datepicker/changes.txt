@@ -1,0 +1,9 @@
+Version 0.2 2343
+August 18, 2011
+
+	- Added datetimepicker widget
+	
+Version 0.1 2342
+June 7, 2011
+	
+	- Initial check-in to repository.

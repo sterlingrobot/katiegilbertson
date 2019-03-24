@@ -1,0 +1,45 @@
+<!--CSS file (default YUI Sam Skin) -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.5.1/build/datatable/assets/skins/sam/datatable.css">
+
+<!-- Dependencies -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/element/element-beta-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/datasource/datasource-beta-min.js"></script>
+
+<!-- OPTIONAL: JSON Utility -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/json/json-min.js"></script>
+
+<!-- OPTIONAL: Connection (enables XHR) -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/connection/connection-min.js"></script>
+
+<!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/dragdrop/dragdrop-min.js"></script>
+
+<!-- OPTIONAL: Calendar (enables calendar editors) -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/calendar/calendar-min.js"></script>
+
+<!-- Source files -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/datatable/datatable-beta-min.js"></script>
+
+<script language="javascript"><!--
+{literal}
+// Only display 2 Columns
+var myColumnDefs = [
+    {key:"name", label:"Dog's Name"},
+    {key:"breed", label:"Dog's Breed"}
+];
+
+// 3 fields of data are available in the RecordSet
+var myDataSource = new YAHOO.util.DataSource(YAHOO.example.puppies);
+myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+myDataSource.responseSchema = {
+    fields: ["name","breed","age"]
+};
+
+
+// ... or defer instantiation
+YAHOO.util.Event.addListener(window, "load", function() {
+    var myDataTableDeferred = new YAHOO.widget.DataTable("myContainer", myColumnDefs, myDataSource);
+});
+{/literal}
+//--></script>

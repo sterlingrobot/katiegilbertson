@@ -1,0 +1,35 @@
+.cke_button_insertmacro .cke_icon {
+	background-image: url(textfield_add.png) !important;
+	background-position: 0px 0px !important;
+}
+
+.cke_button_previewreport .cke_icon {
+	background-image: url(previewreport.png) !important;
+	background-position: 0px 0px !important;
+}
+
+
+.cke_button_previewreporttable .cke_icon {
+	background-image: url(table.png) !important;
+	background-position: 0px 0px !important;
+}
+
+.cke_button_addsectionheader .cke_icon {
+	background-image: url(layout_header.png) !important;
+	background-position: 0px 0px !important;
+}
+
+.cke_button_addsectionfooter .cke_icon {
+	background-image: url(layout_footer.png) !important;
+	background-position: 0px 0px !important;
+}
+
+.cke_button_validatetemplate .cke_icon {
+	background-image: url(accept.png) !important;
+	background-position: 0px 0px !important;
+}
+
+.cke_button_setrelationship .cke_icon {
+	background-image: url(table_relationship.png) !important;
+	background-position: 0px 0px !important;
+}

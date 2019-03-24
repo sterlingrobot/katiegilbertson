@@ -1,0 +1,72 @@
+
+
+<link rel="stylesheet" type="text/css" href="{$ENV.DATAFACE_URL}/modules/DataGrid/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="{$ENV.DATAFACE_URL}/modules/DataGrid/css/DataGrid.css" />
+<!-- GC -->
+<!-- LIBS -->
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/Ext-min.js"></script>
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/ext-base.js"></script>
+<!-- ENDLIBS -->
+
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/ext-all.js"></script>
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/ext-plugins/Select.js"></script>
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/DataGrid.js"></script>
+
+
+
+<div id="editor-grid"></div>
+
+<script language="javascript"><!--
+{literal}
+
+
+if ( typeof(Dataface) == 'undefined' ) Dataface = {};
+if ( typeof(Dataface.Valuelists) == 'undefined' ) Dataface.Valuelists = {};
+
+{/literal}
+{foreach from=$grid->getValuelists() item=valuelist key=name}
+	Dataface.Valuelists['{$name}'] = {$json->encode($valuelist)};
+	Dataface.renderers['{$name}'] = function(value){literal}{{/literal}
+		return Dataface.Valuelists['{$name}'][value];
+	{literal}}{/literal};
+{/foreach}
+
+var fieldDefs = {$fieldDefs};
+
+{literal}
+for ( var i in fieldDefs){
+	var discard = false;
+	switch ( fieldDefs[i].widget.type ){
+		case 'text':
+		case 'textarea':
+		case 'select':
+		case 'checkbox':
+		case 'hidden':
+		case 'autocomplete':
+		case 'yui_autocomplete':
+		case 'calendar':
+		case 'date':
+		case 'time':
+			break;
+		default:
+			discard = true;
+			break;
+	}
+	if ( discard || fieldDefs[i].repeat || fieldDefs[i].widget.type=='file' ) delete fieldDefs[i];
+}
+	Ext.onReady(function(){
+   Dataface.modules.DataGrid.init();
+   var grid = Dataface.modules.DataGrid.create({
+   		fielddefs: fieldDefs,
+   		id: {/literal}'{$grid->id}'{literal}
+   	});
+   
+   setInterval('Dataface.modules.DataGrid.save()', 5000);
+   grid.render();
+});
+
+{/literal}
+
+//--></script>
+
+

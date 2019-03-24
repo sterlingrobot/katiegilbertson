@@ -1,0 +1,6 @@
+.xf-tagcloud { background-color: #fafafa; border: 1px solid #eaeaea; margin-top: 2px; margin-bottom: 5px; text-align:center; padding:5px; overflow:auto; font-size:70%; font-family:arial; }
+.xf-tagcloud h2 {font-size:2.5em; margin:0 0 10px 0; border-bottom: none; background:url(images/clouds.png) no-repeat 0; padding:15px 0 15px 32px; }
+.xf-tagcloud { margin:0; padding:0; }
+.xf-tagcloud li { list-style-type:none; list-style-image: none;float:left; margin:0 10px; height:35px; }
+.xf-tagcloud li a { text-decoration:none;  }
+.xf-tagcloud li a:hover { text-decoration:underline; }

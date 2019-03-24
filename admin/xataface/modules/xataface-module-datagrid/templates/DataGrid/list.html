@@ -1,0 +1,16 @@
+{use_macro file="Dataface_Main_Template.html"}
+	{fill_slot name="main_section"}
+		<table class="listing">
+			<thead><tr><th>Grid Name</th><th>Actions</th></tr></thead>
+			<tbody>
+			{foreach from=$grids item=grid key=gridID}
+				<tr><td><a href="{$grid.url|escape}">{$grid.name|escape}</a></td>
+					<td><!-- reserved for future use --></td>
+				</tr>
+			{/foreach}
+			</tbody>
+		
+		
+		</table>
+	{/fill_slot}
+{/use_macro}

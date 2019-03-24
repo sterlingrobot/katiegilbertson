@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<datastore>
+{foreach from=$rows item=row}
+	<row id="{$row.__recordID__}">
+	{foreach from=$row item=value key=key}
+		{if $key != '__recordID__'}
+		<{$key}>{$value}</{$key}>
+		{/if}
+	{/foreach}
+	</row>
+{/foreach}
+</datastore>
+

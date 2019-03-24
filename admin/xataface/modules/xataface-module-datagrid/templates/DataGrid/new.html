@@ -1,0 +1,27 @@
+<script type="text/javascript" src="{$ENV.DATAFACE_URL}/modules/DataGrid/js/DataGrid_new.js"></script>
+<script language="javascript"><!--
+var availableColumns;
+availableColumns = {$columns};
+//--></script>
+<form {$form.attributes}>
+{$form.javascript}
+{$form.hidden}
+	<table>
+		<tr>
+			<td valign="top">{$form.title.label}</td>
+			<td>{$form.title.html}</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">{$form.fields.label}</td>
+			<td>
+				From: {$form.table.html}<br />
+				{$form.fields.html}
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">{$form.submit.html}</td>
+		</tr>
+	</table>
+	
+</form>

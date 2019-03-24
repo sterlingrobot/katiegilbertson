@@ -294,6 +294,10 @@ $grey-70: rgba($grey-dk, 0.7);
 		transition-delay: 0s;
 		transition-duration: 2400ms;
 	}
+
+	.project-detail > & {
+		filter: blur(8px);
+	}
 }
 
 .project-name {

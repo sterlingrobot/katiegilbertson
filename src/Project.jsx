@@ -23,6 +23,7 @@ class Project extends Component {
 				name,
 				subtitle,
 				employer,
+				customer,
 				role,
 				date_completed,
 				image,
@@ -70,7 +71,8 @@ class Project extends Component {
 							: null
 					}
 
-					<span className="project-employer">{employer}</span>
+					<span className="project-employer">{employer}{customer ? (' / ' + customer) : ''}</span>
+					<span className="project-customer"></span>
 					<span className="project-date">{date_completed}</span>
 
 				</header>

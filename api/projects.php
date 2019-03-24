@@ -27,6 +27,23 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($results as &$project) :
 
+	// SUBPROJECT ARRAY
+	$projects[$project['id']]['attributes']['subprojects'] = array();
+
+	// SUBPROJECT PARENT
+	if($project['is_subproject']) {
+
+			$stmt2 = $db->prepare('SELECT projects_id FROM subprojects_to_projects WHERE subprojects_id = :id LIMIT 1');
+			$stmt2->bindParam('id', $project['id']);
+			$stmt2->execute();
+			$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+			// set to parent slug for back link
+			$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
+			$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
+	}
+
+
 		$dir = FS_ROOT . $project['images_folder'];
 
 		// IMAGES ARRAY
@@ -66,43 +83,35 @@ foreach($results as &$project) :
 				'type' => 'project',
 				'attributes' => &$project);
 
-		// SUBPROJECT ARRAY
-		$projects[$project['id']]['attributes']['subprojects'] = array();
+		// TAGS ARRAY
+		$stmt3 = $db->prepare('SELECT t.tag FROM tags_to_projects t2p LEFT JOIN tags t ON t.id = t2p.tags_id WHERE projects_id = :id');
+
+		$stmt3->bindParam('id', $project['id']);
+		$stmt3->execute();
+		$projects[$project['id']]['attributes']['tags'] = $stmt3->fetchAll(PDO::FETCH_COLUMN, 0);
 
 		// AWARDS ARRAY
-		$stmt3 = $db->prepare('SELECT * FROM awards_to_projects WHERE projects_id = :id
+		$stmt4 = $db->prepare('SELECT * FROM awards_to_projects WHERE projects_id = :id
 														UNION SELECT * FROM awards_to_projects WHERE projects_id IN
 																(SELECT subprojects_id FROM subprojects_to_projects WHERE projects_id = :id2)
 														ORDER BY award DESC');
 
-		$stmt3->bindParam('id', $project['id']);
-		$stmt3->bindParam('id2', $project['id']);
-		$stmt3->execute();
-		$projects[$project['id']]['attributes']['awards'] = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+		$stmt4->bindParam('id', $project['id']);
+		$stmt4->bindParam('id2', $project['id']);
+		$stmt4->execute();
+		$projects[$project['id']]['attributes']['awards'] = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 
 		// CONTENT ARRAY
-		$stmt4 = $db->prepare('SELECT * FROM content_to_projects WHERE projects_id = :id
+		$stmt5 = $db->prepare('SELECT * FROM content_to_projects WHERE projects_id = :id
 														ORDER BY sort ASC');
 
-		$stmt4->bindParam('id', $project['id']);
-		$stmt4->execute();
+		$stmt5->bindParam('id', $project['id']);
+		$stmt5->execute();
 		$projects[$project['id']]['attributes']['blocks'] = array_map(function($block) {
 			$block['content'] = htmlspecialchars($block['content']);
 			return $block;
-		}, $stmt4->fetchAll(PDO::FETCH_ASSOC));
+		}, $stmt5->fetchAll(PDO::FETCH_ASSOC));
 
-		// SUBPROJECT PARENT
-		if($project['is_subproject']) {
-
-				$stmt2 = $db->prepare('SELECT projects_id FROM subprojects_to_projects WHERE subprojects_id = :id LIMIT 1');
-				$stmt2->bindParam('id', $project['id']);
-				$stmt2->execute();
-				$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-				// set to parent slug for back link
-				$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
-				$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
-		}
 
 endforeach;
 

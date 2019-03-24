@@ -44,6 +44,29 @@ $gated-steps: 'initial',
 		background-size: cover;
 		background-repeat: no-repeat;
 
+		&.loading {
+
+			.icon {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 4em;
+				height: 4em;
+				opacity: 0.2;
+				color: #fff;
+				transform: translate(-50%, -50%);
+				z-index: 2;
+				animation: 2s infinite spin;
+
+				@for $i from 1 through 5 {
+					&:nth-child(#{$i}) {
+						animation-delay: $i * 1.5 * 250ms;
+						animation-duration: $i * 2s;
+					}
+				}
+			}
+		}
+
 		[class^='gated-'] {
 			display: none;
 			z-index: 2;
@@ -80,4 +103,9 @@ $gated-steps: 'initial',
 			transition: 2400ms background;
 		}
 	}
+}
+
+@keyframes spin {
+	from { transform: translate(-50%, -50%) rotateZ(0deg); }
+	to { transform: translate(-50%, -50%) rotateZ(360deg); }
 }

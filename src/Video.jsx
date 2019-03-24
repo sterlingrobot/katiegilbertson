@@ -19,7 +19,8 @@ class Video extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			step: 0
+			step: 0,
+			loading: true
 		};
 		this.steps = [
 			'video-gated-initial',
@@ -65,6 +66,14 @@ class Video extends Component {
 		} = this;
 		return (
 			<div className="video-wrap">
+
+				{ this.state.loading ?
+					<Overlay img={img} step="loading">
+						<Icon icon={Icon.SPINNER} size="lg" />
+						<Icon icon={Icon.SPINNER} size="lg" />
+					</Overlay>
+					: null
+				}
 
 				{ gated && this.steps[this.state.step] !== 'video-gated-success' ?
 
@@ -142,6 +151,7 @@ class Video extends Component {
 					webkitallowfullscreen="true"
 					allowFullScreen
 					allow="fullscreen"
+					onLoad={ () => this.setState( { loading : false } ) }
 					controls>
 					<p>Sorry, we're not able to load the video.</p>
 					<p>You can follow <a href={src}>this link</a> instead to view.</p>

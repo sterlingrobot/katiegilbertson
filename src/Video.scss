@@ -30,7 +30,19 @@ $gated-steps: 'initial',
 
 	video,
 	iframe {
+		opacity: 0;
 		z-index: 1;
+		transition: 600ms opacity;
+	}
+
+	&.ready iframe {
+		opacity: 1;
+	}
+
+	&.ready .video-overlay.loading {
+		opacity: 0;
+		transition: 600ms opacity;
+		pointer-events: none;
 	}
 
 	.video-overlay {
@@ -45,6 +57,7 @@ $gated-steps: 'initial',
 		background-repeat: no-repeat;
 
 		&.loading {
+			opacity: 1;
 
 			.icon {
 				position: absolute;

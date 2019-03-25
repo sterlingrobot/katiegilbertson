@@ -65,15 +65,12 @@ class Video extends Component {
 			props: { title, src, img, gated=0, width=1920, height=1080 }
 		} = this;
 		return (
-			<div className="video-wrap">
+			<div className={`video-wrap ${ !this.state.loading ? 'ready' : '' }`}>
 
-				{ this.state.loading ?
-					<Overlay img={img} step="loading">
-						<Icon icon={Icon.SPINNER} size="lg" />
-						<Icon icon={Icon.SPINNER} size="lg" />
-					</Overlay>
-					: null
-				}
+				<Overlay img={img} step="loading">
+					<Icon icon={Icon.SPINNER} size="lg" />
+					<Icon icon={Icon.SPINNER} size="lg" />
+				</Overlay>
 
 				{ gated && this.steps[this.state.step] !== 'video-gated-success' ?
 

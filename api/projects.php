@@ -32,6 +32,74 @@ foreach($results as &$project) :
 	// SUBPROJECT ARRAY
 	$projects[$project['id']]['attributes']['subprojects'] = array();
 
+	$dir = FS_ROOT . $project['images_folder'];
+
+	// IMAGES ARRAY
+	$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+
+	// PROJECT IMAGE
+	$project['image'] =
+		file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?
+		$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg'
+		: (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png') ?
+					$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png'
+					: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = get_vimeo_thumbnail('https:' . $project['video_link'])) ?
+									preg_replace('/https?:/', '', $vthumb)
+							: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
+											'https://img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
+									: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
+													$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
+											: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
+															$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.png'
+													: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.jpg') ?
+																	$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg'
+																: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
+																				$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
+																				: $project['images'][0])))))));
+		// 'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
+
+	if(preg_match('/(youtube|vimeo)/i', $project['image'])) {
+		list($project['img_width'], $project['img_height']) =
+				getimagesize($project['image']);
+	} else {
+		list($project['img_width'], $project['img_height']) =
+				getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
+	}
+
+	$projects[$project['id']] = array(
+			'id' => $project['id'],
+			'type' => 'project',
+			'attributes' => &$project);
+
+	// TAGS ARRAY
+	$stmt3 = $db->prepare('SELECT t.tag FROM tags_to_projects t2p LEFT JOIN tags t ON t.id = t2p.tags_id WHERE projects_id = :id');
+
+	$stmt3->bindParam('id', $project['id']);
+	$stmt3->execute();
+	$projects[$project['id']]['attributes']['tags'] = $stmt3->fetchAll(PDO::FETCH_COLUMN, 0);
+
+	// AWARDS ARRAY
+	$stmt4 = $db->prepare('SELECT * FROM awards_to_projects WHERE projects_id = :id
+													UNION SELECT * FROM awards_to_projects WHERE projects_id IN
+															(SELECT subprojects_id FROM subprojects_to_projects WHERE projects_id = :id2)
+													ORDER BY award DESC');
+
+	$stmt4->bindParam('id', $project['id']);
+	$stmt4->bindParam('id2', $project['id']);
+	$stmt4->execute();
+	$projects[$project['id']]['attributes']['awards'] = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+
+	// CONTENT ARRAY
+	$stmt5 = $db->prepare('SELECT * FROM content_to_projects WHERE projects_id = :id
+													ORDER BY sort ASC');
+
+	$stmt5->bindParam('id', $project['id']);
+	$stmt5->execute();
+	$projects[$project['id']]['attributes']['blocks'] = array_map(function($block) {
+		$block['content'] = htmlspecialchars($block['content']);
+		return $block;
+	}, $stmt5->fetchAll(PDO::FETCH_ASSOC));
+
 	// SUBPROJECT PARENT
 	if($project['is_subproject']) {
 
@@ -44,76 +112,6 @@ foreach($results as &$project) :
 			$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
 			$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
 	}
-
-
-		$dir = FS_ROOT . $project['images_folder'];
-
-		// IMAGES ARRAY
-		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
-
-		// PROJECT IMAGE
-		$project['image'] =
-			file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?
-			$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg'
-			: (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png') ?
-						$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png'
-						: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = get_vimeo_thumbnail('https:' . $project['video_link'])) ?
-										preg_replace('/https?:/', '', $vthumb)
-								: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
-												'https://img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
-										: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
-														$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
-												: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
-																$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.png'
-														: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.jpg') ?
-																		$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg'
-																	: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
-																					$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
-																					: $project['images'][0])))))));
-			// 'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
-
-		if(preg_match('/(youtube|vimeo)/i', $project['image'])) {
-			list($project['img_width'], $project['img_height']) =
-					getimagesize('https:' . $project['image']);
-		} else {
-			list($project['img_width'], $project['img_height']) =
-					getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
-		}
-
-		$projects[$project['id']] = array(
-				'id' => $project['id'],
-				'type' => 'project',
-				'attributes' => &$project);
-
-		// TAGS ARRAY
-		$stmt3 = $db->prepare('SELECT t.tag FROM tags_to_projects t2p LEFT JOIN tags t ON t.id = t2p.tags_id WHERE projects_id = :id');
-
-		$stmt3->bindParam('id', $project['id']);
-		$stmt3->execute();
-		$projects[$project['id']]['attributes']['tags'] = $stmt3->fetchAll(PDO::FETCH_COLUMN, 0);
-
-		// AWARDS ARRAY
-		$stmt4 = $db->prepare('SELECT * FROM awards_to_projects WHERE projects_id = :id
-														UNION SELECT * FROM awards_to_projects WHERE projects_id IN
-																(SELECT subprojects_id FROM subprojects_to_projects WHERE projects_id = :id2)
-														ORDER BY award DESC');
-
-		$stmt4->bindParam('id', $project['id']);
-		$stmt4->bindParam('id2', $project['id']);
-		$stmt4->execute();
-		$projects[$project['id']]['attributes']['awards'] = $stmt4->fetchAll(PDO::FETCH_ASSOC);
-
-		// CONTENT ARRAY
-		$stmt5 = $db->prepare('SELECT * FROM content_to_projects WHERE projects_id = :id
-														ORDER BY sort ASC');
-
-		$stmt5->bindParam('id', $project['id']);
-		$stmt5->execute();
-		$projects[$project['id']]['attributes']['blocks'] = array_map(function($block) {
-			$block['content'] = htmlspecialchars($block['content']);
-			return $block;
-		}, $stmt5->fetchAll(PDO::FETCH_ASSOC));
-
 
 endforeach;
 

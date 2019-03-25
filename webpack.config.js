@@ -1,18 +1,20 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
+	mode: process.env.NODE_ENV,
 	entry: './src/index.js',
 	output: {
-		path: 'dist/assets',
-		filename: 'bundle.js',
-		sourceMapFilename: 'bundle.map'
+		path: path.resolve(__dirname, 'build'),
+		filename: '[name].bundle.js',
+		sourceMapFilename: '[name].bundle.map'
 	},
 	devtool: '#source-map',
 	module: {
 		rules: [{
 			test: /\.js$/,
 			exclude: /(node_modules)/,
-			loader: ['babel-loader'],
+			loader: 'babel-loader',
 			query: {
 				presets: ['env', 'stage-0', 'react']
 			}
@@ -22,7 +24,7 @@ module.exports = {
 			use: ['style-loader', 'css-loader', {
 				loader: 'postcss-loader',
 				options: {
-					plugins: () => [require('autoprefixer')]
+					plugins: () => [ require('autoprefixer') ]
 				}
 			}]
 		},
@@ -31,7 +33,7 @@ module.exports = {
 			use: ['style-loader', 'css-loader', 'sass-loader', {
 				loader: 'postcss-loader',
 				options: {
-					plugins: () => [require('autoprefixer')]
+					plugins: () => [ require('autoprefixer') ]
 				}
 			}]
 		},
@@ -41,10 +43,10 @@ module.exports = {
 		}]
 	},
 	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true,
-			warnings: false,
-			mangle: true
-		})
+		// new webpack.optimize.UglifyJsPlugin({
+		// 	sourceMap: true,
+		// 	warnings: false,
+		// 	mangle: true
+		// })
 	]
 }

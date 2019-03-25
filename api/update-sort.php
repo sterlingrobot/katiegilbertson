@@ -20,7 +20,7 @@ $stmt = $db->prepare($query);
 $stmt->execute();
 
 if($stmt->rowCount()) {
-	$stmt2 = $db->query('SELECT * FROM projects');
+	$stmt2 = $db->query('SELECT * FROM projects ORDER BY is_subproject ASC, sort ASC');
   out($stmt2->fetchAll(PDO::FETCH_OBJ));
 } else {
 	echo 'error';

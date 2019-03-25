@@ -12,7 +12,7 @@
 					'-table': 'projects',
 					'-mode': 'list',
 					'-limit': '1000',
-					'-sort': 'sort'
+					'-sort': 'is_subproject asc, sort asc'
 				},
 				records;
 

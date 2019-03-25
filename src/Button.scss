@@ -1,13 +1,11 @@
 @import 'variables';
 
 .btn {
+	position: relative;
 	margin: 0 0.5em 0.5em;
 	font-size: 1.2em;
 	font-weight: 600;
 	line-height: 1.6;
-	border: 2px solid #fff;
-	transition: color 200ms, background-color 300ms, border-color 350ms;
-	background-color: #fff;
 	cursor: pointer;
 	appearance: none;
 
@@ -15,14 +13,22 @@
 		font-size: 1em;
 	}
 
+	&.btn-lg {
+		font-size: 1.5em;
+	}
+
 	> a,
 	> .btn-inner {
 		display: flex;
+		flex-flow: row nowrap;
 		justify-content: flex-start;
 		align-items: baseline;
+		height: 100%;
 		padding: 0.333em 1em;
-		flex-flow: row nowrap;
 		color: rgba(#000, 0.7);
+		border: 2px solid #fff;
+		transition: color 200ms, background-color 300ms, border-color 350ms;
+		background-color: #fff;
 		text-decoration: none;
 	}
 
@@ -41,45 +47,53 @@
 	}
 
 	&:hover {
-		color: #fff;
-		background-color: transparent;
-	}
-
-	&.btn-icon,
-	&.btn-outline {
-		border-color: #fff;
-		background-color: transparent;
 
 		> a,
 		> .btn-inner {
 			color: #fff;
+			background-color: transparent;
+		}
+	}
+
+	&.btn-icon,
+	&.btn-outline {
+
+		> a,
+		> .btn-inner {
+			color: #fff;
+			border-color: #fff;
+			background-color: transparent;
 		}
 
 		&:hover {
-			border-color: rgba(#fff, 1);
-			background-color: rgba(#fff, 1);
 
 			> a,
 			> .btn-inner {
 				color: rgba(#000, 1);
+				border-color: rgba(#fff, 1);
+				background-color: rgba(#fff, 1);
 			}
 		}
 	}
 
 	&.btn-link {
 		display: inline-block;
-		border: 0;
-		border-bottom: 0.02em solid transparent;
-		background-color: transparent;
 
 		> a,
 		> .btn-inner {
-			color: $green-lt;
 			padding: 0.1em;
+			color: $green-lt;
+			border: 0;
+			border-bottom: 0.02em solid transparent;
+			background-color: transparent;
 		}
 
 		&:hover {
-			border-color: $green-lt;
+
+			> a,
+			> .btn-inner {
+				border-color: $green-lt;
+			}
 		}
 	}
 
@@ -91,14 +105,28 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			font-size: 0.8em;
 			padding: 0.5em 0.5em 0.2em;
+			font-size: 0.8em;
 			text-align: center;
 
 			.icon {
-				font-size: 2em;
 				margin: 0 0 0.333em;
+				font-size: 2em;
 			}
+		}
+	}
+
+	&.btn-tag {
+
+		> a,
+		> .btn-inner {
+			line-height: 1;
+		}
+
+		.tag-active {
+			color: $green-lt;
+			border-color: $green-lt;
+			background-color: transparent;
 		}
 	}
 }

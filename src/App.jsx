@@ -6,6 +6,7 @@ import Header from './Header';
 import Typeshow from './Typeshow';
 import About from './About';
 import Contact from './Contact';
+import Tags from './Tags';
 import Project from './Project';
 
 import './App.scss';
@@ -22,19 +23,25 @@ class App extends Component {
 		super(props);
 		this.state = {
 			noscroll: /projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '',
-			projectsData: []
+			projectsData: [],
+			projectsTags: []
 		};
 		this.onClick = this.onClick.bind(this);
+		this.onTagClick = this.onTagClick.bind(this);
 	}
 
 	componentDidMount() {
+
 		const endpoint = /development/.test(process.env.NODE_ENV) ?
-			'//api.katiegilbertson.com' //'//api.katie.local:8005'
+			 '//api.katie.local:8005'
+			// '//api.katiegilbertson.com'
 			: '//api.katiegilbertson.com';
+
 		fetch(endpoint)
 			.then(response => response.json())
 			.then(data => this.setState({
-				projectsData: data //[...data.sort((a, b) => a.id - b.id)]
+				projectsData: data.projects,
+				projectsTags: data.tags
 			}))
 			.then(() => (document.getElementById('root').className = 'init'))
 	}
@@ -45,9 +52,15 @@ class App extends Component {
 		});
 	}
 
+	onTagClick(e, history) {
+		const tag = e.target.closest('a');
+		return tag.className === 'tag-active' && history.push('/projects');
+	}
+
 	render() {
 		const {
-			onClick
+			onClick,
+			onTagClick,
 		} = this;
 		return (
 			<Router>
@@ -72,7 +85,7 @@ class App extends Component {
 
 						<Route
 							path="/projects"
-							render={ ({ history }) =>
+							render={ ({ location, history }) =>
 								<div className="projects">
 
 									<Route
@@ -97,7 +110,17 @@ class App extends Component {
 										}}
 									/>
 
+								<Tags tags={this.state.projectsTags} onClick={ (e) => onTagClick.call(this, e, history) } />
+
 								{ this.state.projectsData.map((project, i) => {
+
+										// check for tag filter
+										const match = /\/tags\/(.*?)$/.exec(location.pathname),
+													tag =  match && match[1].replace(/\+/, ' ');
+										if(tag && project.attributes.tags.indexOf(tag) < 0) {
+											return null;
+										}
+
 										return project.id && !project.attributes.is_subproject ?
 											<Link key={project.id}
 												className="project-link"

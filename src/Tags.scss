@@ -1,0 +1,38 @@
+.tags-container {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.btn-tag {
+	margin-left: 0;
+	white-space: nowrap;
+
+	.btn-text {
+		transform: translateX(0);
+		transition: 200ms transform;
+	}
+
+	.icon {
+		position: absolute;
+		opacity: 0;
+		top: calc(50% + 0.15em);
+		left: 0.75em;
+		margin: 0;
+		font-size: 0.666em;
+		transform: translateY(-50%);
+		transition: 200ms opacity;
+	}
+
+	.tag-active:hover {
+
+		.btn-text {
+			transform: translateX(0.5em);
+		}
+
+		.icon {
+			opacity: 1;
+		}
+	}
+}

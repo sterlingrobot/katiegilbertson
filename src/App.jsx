@@ -54,7 +54,7 @@ class App extends Component {
 
 	onTagClick(e, history) {
 		const tag = e.target.closest('a');
-		return tag.className === 'tag-active' && history.push('/projects');
+		return tag.classList.contains('tag-active') && history.push('/projects');
 	}
 
 	render() {

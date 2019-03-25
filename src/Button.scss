@@ -128,5 +128,11 @@
 			border-color: $green-lt;
 			background-color: transparent;
 		}
+
+		.tag-active.initialized:hover {
+			color: #fff;
+			border-color: #fff;
+			background-color: transparent;
+		}
 	}
 }

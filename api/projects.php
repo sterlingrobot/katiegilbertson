@@ -1,6 +1,8 @@
 <?php
 require_once('includes/configure.php');
 
+$out = array();
+
 $stmt = $db->prepare('SELECT id,
 	is_subproject,
 	name,
@@ -58,7 +60,7 @@ foreach($results as &$project) :
 						: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = get_vimeo_thumbnail('https:' . $project['video_link'])) ?
 										preg_replace('/https?:/', '', $vthumb)
 								: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
-												'//img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
+												'https://img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
 										: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
 														$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
 												: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
@@ -125,6 +127,18 @@ function project_sort($a,$b) {
 		return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
 }
 
-out($projects);
+$stmt6 = $db->prepare('
+	SELECT t.tag, c.count FROM `tags` AS t
+		INNER JOIN (SELECT tags_id, COUNT(*) AS count FROM tags_to_projects t2p GROUP BY t2p.tags_id) c
+		ON c.tags_id = t.id
+		ORDER BY c.count DESC
+');
+$stmt6->execute();
+$tags = $stmt6->fetchAll(PDO::FETCH_ASSOC);
+
+$out['projects'] = $projects;
+$out['tags'] = $tags;
+
+out($out);
 
 ?>

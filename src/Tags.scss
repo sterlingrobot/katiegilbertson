@@ -6,7 +6,6 @@
 }
 
 .btn-tag {
-	margin-left: 0;
 	white-space: nowrap;
 
 	.btn-text {
@@ -17,7 +16,7 @@
 	.icon {
 		position: absolute;
 		opacity: 0;
-		top: calc(50% + 0.15em);
+		top: calc(50% + 0.015em);
 		left: 0.75em;
 		margin: 0;
 		font-size: 0.666em;
@@ -25,13 +24,32 @@
 		transition: 200ms opacity;
 	}
 
+	.tag-active,
 	.tag-active:hover {
 
 		.btn-text {
 			transform: translateX(0.5em);
 		}
+	}
 
-		.icon {
+	.tag-active {
+
+		.icon-check {
+			opacity: 1;
+		}
+
+		.icon-cross {
+			opacity: 0;
+		}
+	}
+
+	.tag-active.initialized:hover {
+
+		.icon-check {
+			opacity: 0;
+		}
+
+		.icon-cross {
 			opacity: 1;
 		}
 	}

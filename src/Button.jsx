@@ -16,8 +16,11 @@ const BtnLink = ({ url, activeClass, children }) =>
 		: <div className="btn-inner">{children}</div>
 	);
 
-const Button = ({ text, type='default', size='md', url='', activeClass='', icons=[], onClick }) =>
-	<div className={`btn btn-${type} btn-${size}`} onClick={onClick} >
+const Button = ({ text, type='default', size='md', url='', activeClass='', icons=[], onClick, onMouseEnter, onMouseLeave }) =>
+	<div className={`btn btn-${type} btn-${size}`}
+		onClick={onClick}
+		onMouseEnter={onMouseEnter}
+		onMouseLeave={onMouseLeave} >
 		<BtnLink url={url} activeClass={activeClass} >
 			{ icons[0] ?  <Icon icon={icons[0]} /> : null }
 			<span className="btn-text">{text}</span>

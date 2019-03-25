@@ -50,6 +50,8 @@ main {
 	}
 }
 
-.tags-container {
-	margin: 1em auto 2em;
+.projects .tags-container {
+	flex: 0 1 100%;
+	justify-content: center;
+	margin: 1em 0 2em;
 }

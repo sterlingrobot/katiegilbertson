@@ -5,6 +5,11 @@ import Icon from './Icon';
 
 import './Tags.scss';
 
+const initialize = (e) => {
+	const active = e.target.closest('.tag-active');
+	return active && active.classList.add('initialized');
+}
+
 const Tags = ({ tags=[], onClick }) =>
 	<div className="tags-container">
 		{ tags.map(({ tag }, i) =>
@@ -14,9 +19,11 @@ const Tags = ({ tags=[], onClick }) =>
 					activeClass='tag-active'
 					type='tag'
 					size='sm'
-					icons={[Icon.CROSS]}
+					icons={[Icon.CROSS, Icon.CHECK]}
 					url={`/projects/tags/${tag.replace(' ', '+')}`}
 					onClick={onClick}
+					onMouseEnter={initialize}
+					onMouseLeave={initialize}
 				/>
 			)
 		}

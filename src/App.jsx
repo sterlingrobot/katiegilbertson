@@ -33,8 +33,8 @@ class App extends Component {
 	componentDidMount() {
 
 		const endpoint = /development/.test(process.env.NODE_ENV) ?
-			 '//api.katie.local:8005'
-			// '//api.katiegilbertson.com'
+			 // '//api.katie.local:8005'
+			'//api.katiegilbertson.com'
 			: '//api.katiegilbertson.com';
 
 		fetch(endpoint)

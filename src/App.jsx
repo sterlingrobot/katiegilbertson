@@ -17,12 +17,15 @@ const routes = [
 	{ name: 'Contact', url: '/contact' }
 ];
 
+const noScroll = () =>
+	/projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '';
+
 class App extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			noscroll: /projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '',
+			noscroll: noScroll(),
 			projectsData: [],
 			projectsTags: []
 		};
@@ -44,6 +47,9 @@ class App extends Component {
 				projectsTags: data.tags
 			}))
 			.then(() => (document.getElementById('root').className = 'init'))
+
+		return window.addEventListener('popstate',
+			(e) => this.setState({ noscroll: noScroll() }));
 	}
 
 	onClick(e) {

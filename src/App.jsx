@@ -18,7 +18,7 @@ const routes = [
 ];
 
 const noScroll = () =>
-	/projects\/\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '';
+	/projects\/(?!tags)\S+\/\S+$/.test(window.location.href) ? 'noscroll' : '';
 
 class App extends Component {
 

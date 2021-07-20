@@ -6,6 +6,7 @@ configure.php
 config.inc.php
 conf.ini
 *.sql
+.vscode
 
 # dependencies
 /node_modules

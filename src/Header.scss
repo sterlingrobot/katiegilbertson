@@ -23,6 +23,10 @@
 	h6 {
 		font-weight: 200;
 		text-transform: lowercase;
+
+		> span {
+			text-transform: uppercase;
+		}
 	}
 
 	h2 {

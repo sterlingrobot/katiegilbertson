@@ -127,7 +127,8 @@ class App extends Component {
 											return null;
 										}
 
-										return project.id && !project.attributes.is_subproject ?
+										return (project.id && !project.attributes.is_subproject) 
+											|| (project.id && !!tag) ?
 											<Link key={project.id}
 												className="project-link"
 												to={`/projects/${project.attributes.slug}`}

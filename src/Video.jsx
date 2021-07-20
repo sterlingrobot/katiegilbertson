@@ -62,15 +62,17 @@ class Video extends Component {
 	render() {
 		const {
 			generateUrl,
-			props: { title, src, img, gated=0, width=1920, height=1080 }
+			props: { title, src, img, links=[], gated=0, width=1920, height=1080 }
 		} = this;
 		return (
 			<div className={`video-wrap ${ !this.state.loading ? 'ready' : '' }`}>
 
-				<Overlay img={img} step="loading">
-					<Icon icon={Icon.SPINNER} size="lg" />
-					<Icon icon={Icon.SPINNER} size="lg" />
-				</Overlay>
+				{this.state.loading &&
+					<Overlay img={img} step="loading">
+						<Icon icon={Icon.SPINNER} size="lg" />
+						<Icon icon={Icon.SPINNER} size="lg" />
+					</Overlay>
+				}
 
 				{ gated && this.steps[this.state.step] !== 'video-gated-success' ?
 
@@ -137,22 +139,40 @@ class Video extends Component {
 					: null
 				}
 
-				<iframe
-					src={src}
-					title={title}
-					width={width}
-					height={height}
-					border="0"
-					poster={img}
-					mozallowfullscreen="true"
-					webkitallowfullscreen="true"
-					allowFullScreen
-					allow="fullscreen"
-					onLoad={ () => this.setState( { loading : false } ) }
-					controls>
-					<p>Sorry, we're not able to load the video.</p>
-					<p>You can follow <a href={src}>this link</a> instead to view.</p>
-				</iframe>
+				{ src ?
+					<iframe
+						src={src}
+						title={title}
+						width={width}
+						height={height}
+						border="0"
+						poster={img}
+						mozallowfullscreen="true"
+						webkitallowfullscreen="true"
+						allowFullScreen
+						allow="fullscreen"
+						onLoad={ () => this.setState( { loading : false } ) }
+						controls>
+						<p>Sorry, we're not able to load the video.</p>
+						<p>You can follow <a href={src}>this link</a> instead to view.</p>
+					</iframe>
+
+					: (
+						<Overlay img={img} step="success">
+							{
+								links.map(link => 
+									<Button
+										key={link.url}
+										type={link.type}
+										text={link.text}
+										url={link.url}
+									/>
+								)
+							}
+						</Overlay>
+					)
+
+				}	
 			</div>
 		);
 	}

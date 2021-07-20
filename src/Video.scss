@@ -56,6 +56,19 @@ $gated-steps: 'initial',
 		background-size: cover;
 		background-repeat: no-repeat;
 
+    > .btn {
+      margin: auto 3em 1em;
+	    z-index: 2;
+
+      ~ .btn {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 3em;
+      }
+    }
+
 		&.loading {
 			opacity: 1;
 

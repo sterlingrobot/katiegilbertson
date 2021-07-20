@@ -32,6 +32,7 @@ class Project extends Component {
 				is_gated,
 				is_subproject,
 				images=[],
+				links=[],
 				awards=[],
 				blocks=[],
 				subprojects=[],
@@ -88,22 +89,23 @@ class Project extends Component {
 							: null
 						}
 
-						{ video_link ?
+						{ // video_link ?
 							<div className="project-video">
-								<Video title={name} src={video_link} img={image} gated={is_gated} />
+								<Video title={name} src={video_link} img={image} links={links} gated={is_gated} />
 							</div>
 
-							: !subprojects.length && images.length ?
-								<div className="project-images">
-									<Slider images={images} />
-								</div>
+							// : images.length ?
+							// 	<div className="project-images">
+							// 		<Slider images={images} />
+							// 	</div>
 
-								: null
+							// : null
 						}
 
 						<Route render={ ({ history }) =>
 							subprojects.length ?
 								<div className="project-subprojects">
+									<h2>Related Work</h2>
 									{
 										subprojects.map((project, i) =>
 											<Link key={project.id}

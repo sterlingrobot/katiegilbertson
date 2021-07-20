@@ -100,6 +100,13 @@ foreach($results as &$project) :
 		return $block;
 	}, $stmt5->fetchAll(PDO::FETCH_ASSOC));
 
+	// LINKS ARRAY
+	$stmt7 = $db->prepare('SELECT * FROM links_to_projects WHERE projects_id = :id');
+
+	$stmt7->bindParam('id', $project['id']);
+	$stmt7->execute();
+	$projects[$project['id']]['attributes']['links'] = $stmt7->fetchAll(PDO::FETCH_ASSOC);
+
 	// SUBPROJECT PARENT
 	if($project['is_subproject']) {
 

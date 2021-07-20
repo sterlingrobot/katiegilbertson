@@ -385,6 +385,12 @@ $grey-70: rgba($grey-dk, 0.7);
 	font-size: 75%;
 	flex-flow: row wrap;
 
+	h2 {
+		flex-basis: 100%;
+		font-weight: 300;
+		margin-bottom: 1em;
+	}
+
 	> .project {
 		flex: 0 1 24em;
 	}

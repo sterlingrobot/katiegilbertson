@@ -16,7 +16,7 @@ $stmt = $db->prepare('SELECT id,
 	role,
 	images_folder,
 	video_link,
-	video_pswd IS NOT NULL AS is_gated,
+	LENGTH(video_pswd > 0) AS is_gated,
 	social_links,
 	sort
 	FROM projects

@@ -16,10 +16,11 @@ $stmt = $db->prepare('SELECT id,
 	role,
 	images_folder,
 	video_link,
-	LENGTH(video_pswd > 0) AS is_gated,
+	LENGTH(video_pswd) > 0 AS is_gated,
 	social_links,
 	sort
 	FROM projects
+	WHERE is_active = 1
 	ORDER BY is_subproject ASC, sort ASC
 ');
 $stmt->execute();

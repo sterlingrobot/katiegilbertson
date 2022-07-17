@@ -55,7 +55,7 @@ class Video extends Component {
 			// yahoo is dumb
 			provider === 'yahoo' ? 'katie@katiegilbertson.com' : 'Katie Lose Gilbertson <katie@katiegilbertson.com>',
 			`${this.providers[provider].subject}=Video Access Request: ${this.props.title}`,
-			`&body=Hello,\r\n\r\nI'd like the password view this video.`,
+			`&body=Hello,\r\n\r\nI'd like the password to view this video.`,
 		].join(''));
 	}
 

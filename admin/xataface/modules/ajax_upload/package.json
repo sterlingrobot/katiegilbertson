@@ -1,0 +1,10 @@
+{
+  "author": "Steve Hannah",
+  "description": "AJAX Upload widget for Xataface apps",
+  "main": "index.js",
+  "repository": "",
+  "version": "0.1.1",
+  "license": "ISC",
+  "name": "xataface-module-ajax_upload",
+  "scripts": {"test": "echo \"Error: no test specified\" && exit 1"}
+}

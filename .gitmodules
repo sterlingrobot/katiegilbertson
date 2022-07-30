@@ -1,3 +1,0 @@
-[submodule "admin/xataface/modules/ajax_upload"]
-	path = admin/xataface/modules/ajax_upload
-	url = git@github.com:shannah/xataface-module-ajax_upload.git

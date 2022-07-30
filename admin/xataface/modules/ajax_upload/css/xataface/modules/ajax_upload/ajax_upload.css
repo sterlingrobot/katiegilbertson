@@ -1,0 +1,18 @@
+.xf-ajax-upload-wrapper {
+	background-color: #dee7ec;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.xf-ajax-upload-progress-bar {
+	width: 150px;
+	height: 15px;
+}
+
+.xf-ajax-upload-filename,
+.xf-ajax-upload-filesize {
+	font-size: 10px;
+	color: #666;
+	font-family: arial, helvetica, sans-serif;
+	
+}

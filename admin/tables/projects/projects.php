@@ -1,4 +1,5 @@
 <?php
+require_once('/var/www/api/includes/functions.php');
 
 class tables_projects {
 
@@ -78,5 +79,27 @@ class tables_projects {
         return $rec;
 		}
 
+	function slug__pushValue($record, $element) {
+		$value = $element->getValue();
 
+		$parts = array_map(function($str) {
+			return GenerateUrl($str);
+		}, [ $record->val('name'), $record->val('role') ]);
+		$generatedValue = implode('/', $parts);
+
+		if($value == $generatedValue) return null;
+		return $value;
+	}
+
+
+	function slug__pullValue($record) {
+		$value = $record->getValue('slug');
+		if($value) return $value;
+		
+		$parts = array_map(function($str) {
+			return GenerateUrl($str);
+		}, [ $record->val('name'), $record->val('role') ]);
+
+		return implode('/', $parts);
+	}
 }

@@ -30,6 +30,13 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($results as &$project) :
 
+	if(is_null($project['slug'])) {
+		$parts = array_map(function($str) {
+			return GenerateUrl($str);
+		}, [ $project['name'], $project['role'] ]);
+		$project['slug'] = implode('/', $parts);
+	}
+
 	// SUBPROJECT ARRAY
 	$projects[$project['id']]['attributes']['subprojects'] = array();
 
@@ -41,8 +48,8 @@ foreach($results as &$project) :
 		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
 	}
 
-	$stmt9 = $db->prepare('SELECT i2p.title, i2p.image
-							FROM images_to_projects i2p WHERE projects_id = :id
+	$stmt9 = $db->prepare('SELECT title, CONCAT("/assets/images/projects/", image) as image
+							FROM images_to_projects WHERE projects_id = :id
 							ORDER BY sort ASC');
 	$stmt9->bindParam('id', $project['id']);
 	$stmt9->execute();

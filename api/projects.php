@@ -37,6 +37,12 @@ foreach($results as &$project) :
 
 	// IMAGES ARRAY
 	$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+	$stmt9 = $db->prepare('SELECT i2p.title, i2p.image
+							FROM images_to_projects i2p WHERE projects_id = :id
+							ORDER BY sort ASC');
+	$stmt9->bindParam('id', $project['id']);
+	$stmt9->execute();
+	$project['images_new'] = $stmt9->fetchAll(PDO::FETCH_ASSOC);
 
 	// PROJECT IMAGE
 	$project['image'] =

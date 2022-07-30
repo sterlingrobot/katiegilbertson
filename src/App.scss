@@ -39,6 +39,7 @@ main {
 	margin: 0 auto;
 	padding-right: 2em;
 	padding-left: 2em;
+	position: relative;
 
 	@media only screen and (max-width: $bp-mobile) {
 		padding-right: 0.5em;
@@ -47,6 +48,28 @@ main {
 
 	> * {
 		color: #fff;
+	}
+
+	&.loading {
+		.icon {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 4em;
+			height: 4em;
+			opacity: 0.2;
+			color: #fff;
+			transform: translate(-50%, -50%);
+			z-index: 2;
+			animation: 0.5s infinite spin;
+
+			@for $i from 1 through 5 {
+				&:nth-child(#{$i}) {
+					animation-delay: ($i - 1) * 250ms;
+					animation-duration: $i * 0.5s;
+				}
+			}
+		}
 	}
 }
 

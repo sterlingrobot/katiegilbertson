@@ -12,6 +12,7 @@ import {
 
 import Nav from './Nav';
 import Header from './Header';
+import Icon from './Icon';
 import Typeshow from './Typeshow';
 import About from './About';
 import Contact from './Contact';
@@ -65,6 +66,7 @@ class App extends Component {
     }
 
     render() {
+        const isLoading = !this.state.projectsData.length;
         const { onClick, onTagClick } = this;
 
         const Projects = () => {
@@ -74,6 +76,12 @@ class App extends Component {
                 <div className="projects">
                     <Outlet />
                     <Tags tags={this.state.projectsTags} onClick={(e) => onTagClick.call(this, e, navigate)} />
+                    {isLoading && (
+                        <>
+                            <Icon icon={Icon.SPINNER} size="lg" />
+                            <Icon icon={Icon.SPINNER} size="lg" />
+                        </>
+                    )}
 
                     {this.state.projectsData.map((project, i) => {
                         // check for tag filter
@@ -106,12 +114,7 @@ class App extends Component {
                     this.state.projectsData.filter((p) => p.attributes.slug === slug).shift();
             return project ? (
                 <section className="project-wrap">
-                    <Project
-                        view="detail"
-                        awards={project.awards}
-                        blocks={project.blocks}
-                        {...project.attributes}
-                    />
+                    <Project view="detail" awards={project.awards} blocks={project.blocks} {...project.attributes} />
                 </section>
             ) : null;
         };
@@ -121,7 +124,7 @@ class App extends Component {
                 <main className="app">
                     <Nav routes={routes} />
                     <Header />
-                    <section className="app-content">
+                    <section className={`app-content ${isLoading ? 'loading' : ''}`}>
                         <Routes>
                             <Route
                                 exact

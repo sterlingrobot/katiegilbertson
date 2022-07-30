@@ -34,9 +34,13 @@ foreach($results as &$project) :
 	$projects[$project['id']]['attributes']['subprojects'] = array();
 
 	$dir = FS_ROOT . $project['images_folder'];
-
+	
 	// IMAGES ARRAY
-	$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+	$project['images'] = [];
+	if ($project['images_folder']) {
+		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+	}
+
 	$stmt9 = $db->prepare('SELECT i2p.title, i2p.image
 							FROM images_to_projects i2p WHERE projects_id = :id
 							ORDER BY sort ASC');
@@ -63,7 +67,6 @@ foreach($results as &$project) :
 																: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
 																				$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
 																				: $project['images'][0])))))));
-		// 'main' . ($project['is_subproject'] ? '_' . $project['id'] : '') . '.jpg' ?: $project['images'][0];
 
 	if(preg_match('/(youtube|vimeo)/i', $project['image'])) {
 		list($project['img_width'], $project['img_height']) =

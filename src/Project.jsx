@@ -30,8 +30,35 @@ function Project(props) {
         onClick,
     } = props;
 
+    const descriptionRef = React.useRef(null);
+
+    const handleTransitionEnd = (event) => {
+        if (event.propertyName === 'height') {
+            descriptionRef.current?.style.removeProperty('--fullHeight');
+        }
+    };
+
+    React.useEffect(() => {
+        const { current } = descriptionRef;
+        function calculateFullHeight() {
+            if (current) {
+                const { scrollHeight } = current;
+                current.style.setProperty('--fullHeight', `${scrollHeight}px`);
+                current.addEventListener('mouseleave', calculateFullHeight);
+            }
+        }
+
+        window.addEventListener('resize', calculateFullHeight);
+        calculateFullHeight();
+
+        return () => {
+            current?.removeEventListener('mouseleave', calculateFullHeight);
+            window.removeEventListener('resize', calculateFullHeight);
+        };
+    }, []);
+
     return (
-        <article className={`project project-${view}`} onClick={onClick}>
+        <article className={`project project-${view} ${Boolean(description) ? 'with-description' : ''}`} onClick={onClick}>
             {view === 'detail' ? (
                 <Link className="icn-close" to="/projects">
                     <span>Close</span>
@@ -53,18 +80,22 @@ function Project(props) {
                     {view === 'detail' ? <span className="project-subtitle">{subtitle}</span> : null}
                 </h4>
 
-                {view === 'list' && awards.length ? (
-                    <div className="project-awards">
-                        <Award provider={awards.length} />
-                    </div>
-                ) : null}
+                <div className="project-awards">
+                    {view === 'list' && awards.length ? <Award provider={awards.length} /> : null}
+                </div>
 
                 <span className="project-employer">
                     {employer}
                     {customer ? ' / ' + customer : ''}
                 </span>
-                <span className="project-customer"></span>
                 <span className="project-date">{date_completed}</span>
+
+                <Block
+                    content={description}
+                    classArr={['project-description']}
+                    ref={descriptionRef}
+                    onTransitionEnd={handleTransitionEnd}
+                />
             </header>
 
             {view === 'detail' ? (

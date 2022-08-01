@@ -17,11 +17,12 @@ function decodeHtml(str) {
 		return str && str.replace(new RegExp(Object.keys(map).join('|'), 'g'), (m) => map[m]);
 }
 
-const Block  = ({ content, classArr=[] }) =>
+const Block  = ({ content, classArr=[] }, ref) =>
 	<div
 		className={ classArr.reduce((str, cls) => [str, cls].join(' '), '') }
 		dangerouslySetInnerHTML={createMarkup(content)}
+		ref={ref}
 	>
 	</div>
 
-export default Block;
+export default React.forwardRef(Block);

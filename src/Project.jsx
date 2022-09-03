@@ -7,6 +7,20 @@ import Award from './Award.jsx';
 import Block from './Block.jsx';
 
 import './Project.scss';
+import Button from './Button.jsx';
+
+function SubProjects({ subprojects, withHeading }) {
+    return (
+        <div className="project-subprojects">
+            {withHeading && <h2>Related Work</h2>}
+            {subprojects.map((project, i) => (
+                <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
+                    <Project view="list" {...project} />
+                </Link>
+            ))}
+        </div>
+    );
+}
 
 function Project(props) {
     const {
@@ -22,13 +36,16 @@ function Project(props) {
         video_link,
         is_gated,
         is_subproject,
-        // images = [],
+        images = [],
         links = [],
         awards = [],
         blocks = [],
         subprojects = [],
         onClick,
     } = props;
+
+    const hasContent = Boolean(description || blocks.length || links.length);
+    const hasVideoOrSubprojects = Boolean((video_link && !is_gated) || (subprojects.length && !hasContent));
 
     return (
         <article className={`project project-${view}`} onClick={onClick}>
@@ -68,7 +85,7 @@ function Project(props) {
             </header>
 
             {view === 'detail' ? (
-                <div className="project-content">
+                <div className={`project-content ${hasVideoOrSubprojects ? 'has-video' : 'no-video'}`}>
                     {awards.length ? (
                         <div className="project-awards">
                             {awards.map((award) => (
@@ -77,37 +94,33 @@ function Project(props) {
                         </div>
                     ) : null}
 
-                    {
-                        // video_link ?
-                        <div className="project-video">
+                    <div className={hasVideoOrSubprojects ? 'project-video' : 'project-images'}>
+                        {video_link ? (
                             <Video title={name} src={video_link} img={image} links={links} gated={is_gated} />
-                        </div>
+                        ) : subprojects.length ? (
+                            <SubProjects subprojects={subprojects} />
+                        ) : images.length ? (
+                            images.map((img, i) => <img key={i} src={img} alt="" />)
+                        ) : null}
 
-                        // : images.length ?
-                        // 	<div className="project-images">
-                        // 		<Slider images={images} />
-                        // 	</div>
+                        {hasContent && video_link && subprojects.length ? (
+                            <SubProjects withHeading subprojects={subprojects} />
+                        ) : null}
+                    </div>
 
-                        // : null
-                    }
-
-                    {subprojects.length ? (
-                        <div className="project-subprojects">
-                            <h2>Related Work</h2>
-                            {subprojects.map((project, i) => (
-                                <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
-                                    <Project view="list" {...project} />
-                                </Link>
+                    {hasContent && (
+                        <div className="project-description">
+                            {links.map((link) => (
+                                <Button key={link.url} type={link.type} text={link.text} url={link.url} />
                             ))}
+                            <Block content={description} classArr={['project-block']} />
+                            {blocks.length
+                                ? blocks.map(({ content }, i) => (
+                                      <Block key={i} content={content} classArr={['project-block']} />
+                                  ))
+                                : null}
                         </div>
-                    ) : null}
-
-                    <Block content={description} classArr={['project-description']} />
-                    {blocks.length
-                        ? blocks.map(({ content }, i) => (
-                              <Block key={i} content={content} classArr={['project-block']} />
-                          ))
-                        : null}
+                    )}
                 </div>
             ) : null}
         </article>

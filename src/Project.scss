@@ -134,7 +134,7 @@ $grey-70: rgba($grey-dk, 0.7);
 }
 
 .project-awards {
-	flex: 0 0 auto;
+	flex: 0 0 100%;
 	opacity: 0.8;
 	width: 4em;
 	height: 4em;
@@ -204,6 +204,26 @@ $grey-70: rgba($grey-dk, 0.7);
 		// margin: 0 auto;
 		order: 2;
 	}
+
+	&.no-video {
+		align-items: center;
+
+		@media only screen and (min-width: $bp-mobile) {
+			flex-flow: row wrap;
+			align-items: flex-start;
+			gap: 2em;
+
+			> * {
+				max-width: calc(50% - 1em);
+			}
+
+			> .project-awards {
+				max-width: none;
+				flex: 1 0 100%;
+				max-height: 9em;
+			}
+		}
+	}
 }
 
 .icn-close,
@@ -251,7 +271,7 @@ $grey-70: rgba($grey-dk, 0.7);
 .icn-back {
 	position: relative;
 	top: 0.5em;
-	margin-right: -1em;
+	margin-right: -0.5em;
 	transform: rotateZ(45deg);
 
 	&:before,
@@ -347,6 +367,12 @@ $grey-70: rgba($grey-dk, 0.7);
 	.project-detail & {
 		display: block;
 	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		margin-bottom: 1em;
+	}
 }
 
 @media only screen and (min-width: $bp-mobile) {
@@ -366,17 +392,23 @@ $grey-70: rgba($grey-dk, 0.7);
 	flex: 0 0 auto;
 	position: relative;
 	max-width: 80ex;
-	padding: 1em 2em 2em;
+	padding: 1em 1em 2em;
 	line-height: 1.55;
 
+	&:first-child,
 	+ .project-block {
 		padding-top: 0;
 	}
 
-	.project-detail > .project-content > & {
+	.project-detail > .project-content & {
 		display: block;
 	}
 }
+
+.project-description {
+	padding: 0;
+}
+
 
 .project-subprojects {
 	display: flex;

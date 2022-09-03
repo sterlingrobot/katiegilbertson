@@ -123,11 +123,7 @@ function Video({ title, src, img, links = [], gated = 0, width = 1920, height = 
                     </p>
                 </iframe>
             ) : (
-                <Overlay img={img} step="success">
-                    {links.map((link) => (
-                        <Button key={link.url} type={link.type} text={link.text} url={link.url} />
-                    ))}
-                </Overlay>
+                <Overlay img={img} step="success" />
             )}
         </div>
     );

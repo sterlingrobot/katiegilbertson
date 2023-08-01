@@ -132,9 +132,12 @@ foreach($results as &$project) :
 			$stmt2->execute();
 			$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-			// set to parent slug for back link
-			$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
-			$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
+			// bail out if parent project is inactive
+			if($projects[$parent['projects_id']]) {
+				// set to parent slug for back link
+				$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
+				$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
+			}
 	}
 
 endforeach;

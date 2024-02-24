@@ -13,11 +13,17 @@ function SubProjects({ subprojects, withHeading }) {
     return (
         <div className="project-subprojects">
             {withHeading && <h2>Related Work</h2>}
-            {subprojects.map((project, i) => (
-                <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
-                    <Project view="list" {...project} />
-                </Link>
-            ))}
+            {subprojects.map((project, i) =>
+                project.has_page ? (
+                    <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
+                        <Project view="list" {...project} />
+                    </Link>
+                ) : (
+                    <div key={project.id} className="project-link static">
+                        <Project view="list" {...project} />
+                    </div>
+                )
+            )}
         </div>
     );
 }

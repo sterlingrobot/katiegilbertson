@@ -4,6 +4,7 @@ require_once('includes/configure.php');
 $out = array();
 
 $stmt = $db->prepare('SELECT id,
+	has_page,
 	is_subproject,
 	name,
 	subtitle,

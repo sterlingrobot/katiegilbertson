@@ -8,6 +8,7 @@ import Block from './Block.jsx';
 
 import './Project.scss';
 import Button from './Button.jsx';
+import Slider from './Slider.jsx';
 
 function SubProjects({ subprojects, withHeading }) {
     return (
@@ -100,7 +101,7 @@ function Project(props) {
                         ) : subprojects.length ? (
                             <SubProjects subprojects={subprojects} />
                         ) : images.length ? (
-                            images.map((img, i) => <img key={i} src={img} alt="" />)
+                            <Slider images={images} />
                         ) : null}
 
                         {hasContent && video_link && subprojects.length ? (

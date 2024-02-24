@@ -68,7 +68,7 @@ class App extends Component {
     render() {
         const isLoading = !this.state.projectsData.length;
         const { onClick, onTagClick } = this;
-        console.log(this.state.projectsData);
+
         const Projects = () => {
             const location = useLocation();
             const navigate = useNavigate();

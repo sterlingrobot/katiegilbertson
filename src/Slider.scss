@@ -13,4 +13,8 @@
 		max-width: 100%;
 		scroll-snap-align: center;
 	}
+
+	&.noscroll img {
+		margin: 0;
+	}
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Video from './Video.jsx';
-// import Slider from './Slider.jsx';
+import Slider from './Slider.jsx';
 import Award from './Award.jsx';
 import Block from './Block.jsx';
 
@@ -13,11 +13,17 @@ function SubProjects({ subprojects, withHeading }) {
     return (
         <div className="project-subprojects">
             {withHeading && <h2>Related Work</h2>}
-            {subprojects.map((project, i) => (
-                <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
-                    <Project view="list" {...project} />
-                </Link>
-            ))}
+            {subprojects.map((project, i) =>
+                project.has_page ? (
+                    <Link key={project.id} className="project-link" to={`/projects/${project.slug}`}>
+                        <Project view="list" {...project} />
+                    </Link>
+                ) : (
+                    <div key={project.id} className="project-link static">
+                        <Project view="list" {...project} />
+                    </div>
+                )
+            )}
         </div>
     );
 }
@@ -34,6 +40,7 @@ function Project(props) {
         image,
         description,
         video_link,
+        has_page,
         is_gated,
         is_subproject,
         images = [],
@@ -45,10 +52,11 @@ function Project(props) {
     } = props;
 
     const hasContent = Boolean(description || blocks.length || links.length);
+    const hasPage = Boolean(has_page);
     const hasVideoOrSubprojects = Boolean((video_link && !is_gated) || (subprojects.length && !hasContent));
 
     return (
-        <article className={`project project-${view}`} onClick={onClick}>
+        <article className={`project project-${view} ${!hasPage ? 'static' : ''}`} onClick={onClick}>
             {view === 'detail' ? (
                 <Link className="icn-close" to="/projects">
                     <span>Close</span>
@@ -100,7 +108,7 @@ function Project(props) {
                         ) : subprojects.length ? (
                             <SubProjects subprojects={subprojects} />
                         ) : images.length ? (
-                            images.map((img, i) => <img key={i} src={img} alt="" />)
+                            <Slider images={images} />
                         ) : null}
 
                         {hasContent && video_link && subprojects.length ? (

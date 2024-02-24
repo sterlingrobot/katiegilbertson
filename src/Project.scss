@@ -21,6 +21,12 @@ $grey-70: rgba($grey-dk, 0.7);
 	flex: 1 1 20em;
 	margin: 0 1em 2em;
 	text-decoration: none;
+	border: 2px solid transparent;
+	transition: 250ms border-color;
+
+	&:not(.static):hover {
+		border-color: rgba(255, 255, 255, 0.7);
+	}
 }
 
 .project {
@@ -305,7 +311,7 @@ $grey-70: rgba($grey-dk, 0.7);
 	transition: 4800ms transform;
 	background-repeat: no-repeat;
 
-	.project:hover > &,
+	.project:not(.static):hover > &,
 	.project-detail > & {
 		transform: scale(1.08);
 		// transform:

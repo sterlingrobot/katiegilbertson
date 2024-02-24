@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Video from './Video.jsx';
-// import Slider from './Slider.jsx';
+import Slider from './Slider.jsx';
 import Award from './Award.jsx';
 import Block from './Block.jsx';
 
 import './Project.scss';
 import Button from './Button.jsx';
-import Slider from './Slider.jsx';
 
 function SubProjects({ subprojects, withHeading }) {
     return (
@@ -35,6 +34,7 @@ function Project(props) {
         image,
         description,
         video_link,
+        has_page,
         is_gated,
         is_subproject,
         images = [],
@@ -46,10 +46,11 @@ function Project(props) {
     } = props;
 
     const hasContent = Boolean(description || blocks.length || links.length);
+    const hasPage = Boolean(has_page);
     const hasVideoOrSubprojects = Boolean((video_link && !is_gated) || (subprojects.length && !hasContent));
 
     return (
-        <article className={`project project-${view}`} onClick={onClick}>
+        <article className={`project project-${view} ${!hasPage ? 'static' : ''}`} onClick={onClick}>
             {view === 'detail' ? (
                 <Link className="icn-close" to="/projects">
                     <span>Close</span>

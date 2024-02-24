@@ -68,7 +68,7 @@ class App extends Component {
     render() {
         const isLoading = !this.state.projectsData.length;
         const { onClick, onTagClick } = this;
-
+        console.log(this.state.projectsData);
         const Projects = () => {
             const location = useLocation();
             const navigate = useNavigate();
@@ -92,14 +92,29 @@ class App extends Component {
                         }
 
                         return (project.id && !project.attributes.is_subproject) || (project.id && !!tag) ? (
-                            <Link key={project.id} className="project-link" to={`/projects/${project.attributes.slug}`}>
-                                <Project
-                                    view="list"
-                                    awards={project.awards}
-                                    {...project.attributes}
-                                    onClick={onClick}
-                                />
-                            </Link>
+                            project.attributes.has_page ? (
+                                <Link
+                                    key={project.id}
+                                    className="project-link"
+                                    to={`/projects/${project.attributes.slug}`}
+                                >
+                                    <Project
+                                        view="list"
+                                        awards={project.awards}
+                                        {...project.attributes}
+                                        onClick={onClick}
+                                    />
+                                </Link>
+                            ) : (
+                                <div key={project.id} className="project-link static">
+                                    <Project
+                                        view="list"
+                                        awards={project.awards}
+                                        {...project.attributes}
+                                        onClick={onClick}
+                                    />
+                                </div>
+                            )
                         ) : null;
                     })}
                 </div>

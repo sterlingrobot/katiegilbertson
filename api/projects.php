@@ -29,12 +29,12 @@ $stmt->execute();
 $projects = array();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-foreach($results as &$project) :
+foreach ($results as &$project) :
 
-	if(is_null($project['slug'])) {
-		$parts = array_map(function($str) {
+	if (is_null($project['slug'])) {
+		$parts = array_map(function ($str) {
 			return GenerateUrl($str);
-		}, [ $project['name'], $project['role'] ]);
+		}, [$project['name'], $project['role']]);
 		$project['slug'] = implode('/', $parts);
 	}
 
@@ -42,11 +42,11 @@ foreach($results as &$project) :
 	$projects[$project['id']]['attributes']['subprojects'] = array();
 
 	$dir = FS_ROOT . $project['images_folder'];
-	
+
 	// IMAGES ARRAY
 	$project['images'] = [];
 	if ($project['images_folder']) {
-		$project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+		$project['images'] = getDirectoryTree($dir, '(jpg|jpeg|png|gif)');
 	}
 
 	$stmt9 = $db->prepare('SELECT title, CONCAT("/assets/images/projects/", image) as image
@@ -58,36 +58,57 @@ foreach($results as &$project) :
 
 	// PROJECT IMAGE
 	$project['image'] =
-		file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?
-		$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg'
-		: (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png') ?
-					$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png'
-					: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = get_vimeo_thumbnail('https:' . $project['video_link'])) ?
-									preg_replace('/https?:/', '', $vthumb)
-							: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
-											'https://img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
-									: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
-													$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
-											: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
-															$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.png'
-													: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.jpg') ?
-																	$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg'
-																: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
-																				$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
-																				: $project['images'][0])))))));
+		// use the first image from the new images table if it exists
+		!empty($project['images_new']) && file_exists($project['images_new'][0]['image']) ?
 
-	if(preg_match('/(youtube|vimeo)/i', $project['image'])) {
+		// use an image named `main_{id}.jpg` if it exists
+		$project['images_new'][0]['image'] : (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?
+			$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg'
+
+			// use an image named `main_{id}.png` if it exists
+			: (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png') ?
+				$project['images_folder'] . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.png'
+
+				// if video_link is a vimeo url, fetch the thumbnail via the vimeo api
+				: (preg_match('/vimeo/i', $project['video_link']) && ($vthumb = (string)get_vimeo_thumbnail('https:' . $project['video_link'])) ?
+					preg_replace('/https?:/', '', $vthumb)
+
+					// if video_link is a youtube url, construct the thumbnail url
+					: (preg_match('/youtube/i', $project['video_link']) && preg_match('/embed\/(.*?)$/', $project['video_link'], $matches) ?
+						'https://img.youtube.com/vi/' . $matches[1] . '/mqdefault.jpg'
+
+						// if subproject, use `main_sub.jpg` from the images folder if it exists
+						: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.jpg') ?
+							$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.jpg'
+
+							// if subproject, use `main_sub.png` from the images folder if it exists
+							: ($project['is_subproject'] && file_exists($dir . DIRECTORY_SEPARATOR . 'main_sub.png') ?
+								$project['images_folder'] . DIRECTORY_SEPARATOR . 'main_sub.png'
+
+								// use `main.jpg` from the images folder if it exists
+								: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.jpg') ?
+									$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg'
+
+									// use `main.png` from the images folder if it exists
+									: (file_exists($dir . DIRECTORY_SEPARATOR . 'main.png') ?
+										$project['images_folder'] . DIRECTORY_SEPARATOR . 'main.png'
+
+										// use first image from the images folder
+										: $project['images'][0]))))))));
+
+	if (preg_match('/(youtube|vimeo)/i', $project['image'])) {
 		list($project['img_width'], $project['img_height']) =
-				getimagesize($project['image']);
+			getimagesize($project['image']);
 	} else {
 		list($project['img_width'], $project['img_height']) =
-				getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
+			getimagesize($dir . str_replace($project['images_folder'], '', $project['image']));
 	}
 
 	$projects[$project['id']] = array(
-			'id' => $project['id'],
-			'type' => 'project',
-			'attributes' => &$project);
+		'id' => $project['id'],
+		'type' => 'project',
+		'attributes' => &$project
+	);
 
 	// TAGS ARRAY
 	$stmt3 = $db->prepare('SELECT t.tag FROM tags_to_projects t2p LEFT JOIN tags t ON t.id = t2p.tags_id WHERE projects_id = :id');
@@ -113,7 +134,7 @@ foreach($results as &$project) :
 
 	$stmt5->bindParam('id', $project['id']);
 	$stmt5->execute();
-	$projects[$project['id']]['attributes']['blocks'] = array_map(function($block) {
+	$projects[$project['id']]['attributes']['blocks'] = array_map(function ($block) {
 		$block['content'] = htmlspecialchars($block['content']);
 		return $block;
 	}, $stmt5->fetchAll(PDO::FETCH_ASSOC));
@@ -126,19 +147,19 @@ foreach($results as &$project) :
 	$projects[$project['id']]['attributes']['links'] = $stmt7->fetchAll(PDO::FETCH_ASSOC);
 
 	// SUBPROJECT PARENT
-	if($project['is_subproject']) {
+	if ($project['is_subproject']) {
 
-			$stmt2 = $db->prepare('SELECT projects_id FROM subprojects_to_projects WHERE subprojects_id = :id LIMIT 1');
-			$stmt2->bindParam('id', $project['id']);
-			$stmt2->execute();
-			$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
+		$stmt2 = $db->prepare('SELECT projects_id FROM subprojects_to_projects WHERE subprojects_id = :id LIMIT 1');
+		$stmt2->bindParam('id', $project['id']);
+		$stmt2->execute();
+		$parent = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-			// bail out if parent project is inactive
-			if($projects[$parent['projects_id']]) {
-				// set to parent slug for back link
-				$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
-				$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
-			}
+		// bail out if parent project is inactive
+		if ($projects[$parent['projects_id']]) {
+			// set to parent slug for back link
+			$project['is_subproject'] = $projects[$parent['projects_id']]['attributes']['slug'];
+			$projects[$parent['projects_id']]['attributes']['subprojects'][] = $project;
+		}
 	}
 
 endforeach;
@@ -146,11 +167,12 @@ endforeach;
 usort($projects, 'project_sort');
 
 // Define the custom sort function
-function project_sort($a,$b) {
-		if ($a['attributes']['sort'] === $b['attributes']['sort']) {
-				return 0;
-		}
-		return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
+function project_sort($a, $b)
+{
+	if ($a['attributes']['sort'] === $b['attributes']['sort']) {
+		return 0;
+	}
+	return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
 }
 
 $stmt6 = $db->prepare('
@@ -166,5 +188,3 @@ $out['projects'] = $projects;
 $out['tags'] = $tags;
 
 out($out);
-
-?>

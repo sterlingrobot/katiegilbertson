@@ -41,13 +41,10 @@ foreach ($results as &$project) :
 	// SUBPROJECT ARRAY
 	$projects[$project['id']]['attributes']['subprojects'] = array();
 
+	// IMAGES ARRAY
 	$dir = FS_ROOT . $project['images_folder'];
 
-	// IMAGES ARRAY
 	$project['images'] = [];
-	if ($project['images_folder']) {
-		$project['images'] = getDirectoryTree($dir, '(jpg|jpeg|png|gif)');
-	}
 
 	$stmt9 = $db->prepare('SELECT title, CONCAT("/assets/images/projects/", image) as image
 							FROM images_to_projects WHERE projects_id = :id
@@ -56,10 +53,21 @@ foreach ($results as &$project) :
 	$stmt9->execute();
 	$project['images_new'] = $stmt9->fetchAll(PDO::FETCH_ASSOC);
 
+	// If uses new images table, map images from there
+	if ($project['images_new']) {
+		$project['images'] = array_map(function ($image) {
+			return $image['image'];
+		}, $project['images_new']);
+
+		// Else use manually configured images folder
+	} else if ($project['images_folder']) {
+		$project['images'] = getDirectoryTree($dir, '(jpg|jpeg|png|gif)');
+	}
+
 	// PROJECT IMAGE
 	$project['image'] =
 		// use the first image from the new images table if it exists
-		!empty($project['images_new']) && file_exists($project['images_new'][0]['image']) ?
+		!empty($project['images_new']) && file_exists(FS_ROOT . $project['images_new'][0]['image']) ?
 
 		// use an image named `main_{id}.jpg` if it exists
 		$project['images_new'][0]['image'] : (file_exists($dir . DIRECTORY_SEPARATOR . 'main' . '_' . $project['id'] . '.jpg') ?

@@ -16,6 +16,7 @@ import Icon from './Icon';
 import Typeshow from './Typeshow';
 import About from './About';
 import Contact from './Contact';
+import Resume from './Resume';
 import Tags from './Tags';
 import Project from './Project';
 
@@ -24,6 +25,7 @@ import './App.scss';
 const routes = [
     { name: 'Projects', url: '/projects' },
     { name: 'About', url: '/about' },
+    { name: 'Resume', url: '/resume' },
     { name: 'Contact', url: '/contact' },
 ];
 
@@ -156,6 +158,7 @@ class App extends Component {
                             />
                             <Route path="/about" element={<About />} />
                             <Route path="/contact" element={<Contact />} />
+                            <Route path="/resume" element={<Resume />} />
                             <Route path="/projects" element={<Projects />}>
                                 <Route path=":name/:role" element={<ActiveProject />} />
                             </Route>
